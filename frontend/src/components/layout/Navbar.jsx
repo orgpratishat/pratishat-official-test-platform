@@ -19,6 +19,7 @@ const Navbar = () => {
         <Link to="/" className="text-2xl font-bold text-primary-600">
           
           <span>Crack</span><span className='text-blue-600'>G</span>
+          <span>Mentor Dashboard</span>
         </Link>
       </div>
       <div className="flex items-center space-x-4">
