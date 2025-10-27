@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getDPPSubjects } from '../../services/dppService';
 import SubjectsList from './SubjectsList';
 import ChaptersList from './ChaptersList';
-import DPPList from './DPPList';
+import DPPList from '../DppList';
 import Spinner from '../ui/Spinner';
 
 const DPPSection = () => {

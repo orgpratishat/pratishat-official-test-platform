@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getChapterDPPs } from '../../services/dppService';
-import Card from '../ui/Card';
-import Button from '../ui/Button';
-import Spinner from '../ui/Spinner';
-import Badge from '../ui/Badge';
+import { getChapterDPPs } from '../services/dppService';
+import Card from './ui/Card';
+import Button from './ui/Button';
+import Spinner from './ui/Spinner';
+import Badge from './ui/Badge';
 import { ArrowLeft, Clock, BookOpen, Target, Play } from 'lucide-react';
 
 const DPPList = ({ subject, chapter, onBack }) => {
