@@ -683,11 +683,12 @@ const CreateDPPForm = ({ editingDPP, onBack, onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Difficulty</label>
+              <label className="block text-sm font-medium mb-1">Difficulty *</label>
               <select
                 value={formData.difficulty}
                 onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
                 className="w-full rounded border border-gray-300 px-3 py-2"
+                required
               >
                 <option value="Easy">Easy</option>
                 <option value="Medium">Medium</option>
@@ -696,12 +697,13 @@ const CreateDPPForm = ({ editingDPP, onBack, onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Order</label>
+              <label className="block text-sm font-medium mb-1">Order ID*</label>
               <Input
                 type="number"
                 value={formData.order}
                 onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
                 min="0"
+                required
               />
             </div>
           </div>
