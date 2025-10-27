@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Plus, List } from 'lucide-react';
-import Button from '../ui/Button';
-import Card from '../ui/Card';
-import CreateDPPForm from './CreateDppform';
-import DPPList from './DPPList';
+import Button from './ui/Button';
+import Card from './ui/Card';
+import CreateDPPForm from './dppManagement/CreateDppform';
+import DPPList from './dppManagement/DPPList';
 
 const DPPManagement = () => {
   const [currentView, setCurrentView] = useState('list'); // 'list' or 'create'

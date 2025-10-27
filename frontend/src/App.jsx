@@ -34,7 +34,7 @@ import DPPSection from './components/dppSection/DppSection';
 import DPPTestPage from './components/dppSection/dppTestPage';
 
 
-import DPPManagement from './components/dppManagement/DPPManagement.jsx';
+import DPPManagement from './components/DPPManagement';
 const ProtectedRoute = ({ children }) => {
 
   const { token } = useAuthStore();
