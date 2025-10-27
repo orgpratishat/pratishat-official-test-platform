@@ -18,8 +18,10 @@ const Navbar = () => {
       <div>
         <Link to="/" className="text-2xl font-bold text-primary-600">
           
-          <span>Crack</span><span className='text-blue-600'>G</span>
-          <span>Mentor Dashboard</span>
+          <div className='flex flex-col'>
+            <span>Crack</span><span className='text-blue-600'>G</span>
+          <span className='text-sm'>Mentor Dashboard</span>
+          </div>
         </Link>
       </div>
       <div className="flex items-center space-x-4">
