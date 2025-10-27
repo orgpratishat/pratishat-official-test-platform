@@ -19,7 +19,9 @@ const Navbar = () => {
         <Link to="/" className="text-2xl font-bold text-primary-600">
           
           <div className='flex flex-col'>
-            <span>Crack</span><span className='text-blue-600'>G</span>
+         <div className='flex'>
+             <span>Crack</span><span className='text-blue-600'>G</span>
+         </div>
           <span className='text-sm'>Mentor Dashboard</span>
           </div>
         </Link>
