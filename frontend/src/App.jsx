@@ -243,8 +243,9 @@ import PYQYear from './pages/PYQYear';
 import TopicPractice from './pages/TopicPractice';
 import DPPSection from './components/dppSection/DppSection';
 
-import DPPManagement from './components/dppManagement/dppManagement';
 import DPPTestPage from './components/dppSection/dppTestPage';
+
+import DPPManagement from './components/dppManagement/DPPManagement.jsx';
 const ProtectedRoute = ({ children }) => {
 
   const { token } = useAuthStore();
