@@ -2010,9 +2010,7 @@ const QuestionManagement = () => {
             <Upload className="w-4 h-4 " />
             {uploading ? 'Uploading...' : 'Upload Image'}
           </Button>
-           <Button className="cursor-pointer text-black hover:underline ml-[85vh]" type="button" size="sm" onClick={addSolutionStep}>
-                  <Plus className="w-4 h-4 mr-1  " /> Add Step
-                </Button>
+        
 
           {currentImage && (
             <Button
@@ -2405,7 +2403,7 @@ const QuestionManagement = () => {
             <div>
               <div className="flex justify-between items-center mb-3">
                 <label className="block text-sm font-medium text-gray-700">Solution Steps</label>
-               
+                
               </div>
               {(newMode ? newData : formData).solution.map((step, index) => (
                 <div key={index} className="mb-4 p-4 border border-gray-200 rounded-lg bg-white">
@@ -2428,15 +2426,24 @@ const QuestionManagement = () => {
                     onChange={(value) => updateSolutionStep(index, 'stepText', value)}
                     placeholder={`Describe step ${step.stepNumber}...`}
                   />
-                  <ImageUploadField
+                 
+                 <div className='flex items-center justify-between'>
+                       <ImageUploadField
                     label={`Step ${step.stepNumber} Image`}
                     currentImage={step.stepImage}
                     field="solutionImage"
                     stepIndex={index}
                     uploading={uploading === `solutionImage-null-${index}`}
                   />
+
+                    <Button className="cursor-pointer text-black hover:underline ml-[8vh]" type="button" size="sm" onClick={addSolutionStep}>
+                  <Plus className="w-4 h-4 mr-1  " /> Add Step
+                </Button>
+                 </div>
                 </div>
               ))}
+
+              
             </div>
 
             {/* Form Actions */}
