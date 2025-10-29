@@ -15,7 +15,7 @@ const SubjectsList = ({ subjects, onSubjectSelect }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {subjects.map((subject) => (
+      {subjects?.map((subject) => (
         <Card 
           key={subject.name} 
           className="p-6 hover:shadow-lg transition-shadow cursor-pointer"
