@@ -172,6 +172,51 @@ exports.getAllYears = async (req, res, next) => {
 // @desc    Get PYQ questions by year
 // @route   GET /api/pyq/:year
 // @access  Private
+// exports.getPYQByYear = async (req, res, next) => {
+//   try {
+//     const year = parseInt(req.params.year);
+
+//     // Get all questions for this year
+//     const questions = await Question.find({ year })
+//       .select('-__v')
+//       .sort({ subject: 1, chapter: 1, topic: 1 });
+
+//     if (!questions.length) {
+//       return res.status(404).json({
+//         success: false,
+//         message: `No PYQ questions found for year ${year}`
+//       });
+//     }
+
+//     // Remove correct answer indicator for exam mode
+//     const questionsForExam = questions.map(q => {
+//       const questionObj = q.toObject();
+//       questionObj.options = questionObj.options.map(opt => ({
+//         optionText: opt.optionText,
+//         optionImage: opt.optionImage
+//       }));
+//       return questionObj;
+//     });
+
+//     console.log(`PYQ ${year} fetched: ${questions.length} questions`);
+
+//     res.status(200).json({
+//       success: true,
+//       pyq: {
+//         year,
+//         examName: 'NEET',
+//         totalMarks: questions.length * 4,
+//         duration: 180,
+//         totalQuestions: questions.length,
+//         questions: questionsForExam
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error fetching PYQ by year:", error);
+//     next(error);
+//   }
+// };
+
 exports.getPYQByYear = async (req, res, next) => {
   try {
     const year = parseInt(req.params.year);
@@ -188,13 +233,18 @@ exports.getPYQByYear = async (req, res, next) => {
       });
     }
 
-    // Remove correct answer indicator for exam mode
-    const questionsForExam = questions.map(q => {
+    // Include answers but frontend should handle when to reveal them
+    const questionsWithAnswers = questions.map(q => {
       const questionObj = q.toObject();
+      
+      // Include all option data including isCorrect
+      // Frontend should not reveal isCorrect until answer is locked
       questionObj.options = questionObj.options.map(opt => ({
         optionText: opt.optionText,
-        optionImage: opt.optionImage
+        optionImage: opt.optionImage,
+        isCorrect: opt.isCorrect // Include for answer verification
       }));
+      
       return questionObj;
     });
 
@@ -207,8 +257,12 @@ exports.getPYQByYear = async (req, res, next) => {
         examName: 'NEET',
         totalMarks: questions.length * 4,
         duration: 180,
+        markingScheme: {
+          positiveMarks: 4,
+          negativeMarks: -1
+        },
         totalQuestions: questions.length,
-        questions: questionsForExam
+        questions: questionsWithAnswers // Includes answers for verification
       }
     });
   } catch (error) {
@@ -216,6 +270,7 @@ exports.getPYQByYear = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // @desc    Get PYQ questions by year with filters
 // @route   GET /api/pyq/:year/questions
