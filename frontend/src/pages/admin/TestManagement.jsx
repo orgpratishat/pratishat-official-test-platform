@@ -1,7 +1,5 @@
 
 
-
-
 // import React, { useEffect, useMemo, useState } from 'react';
 // import { createTest, updateTest, deleteTest } from '../../services/admin';
 // import { getAllTests } from '../../services/tests';
@@ -11,7 +9,7 @@
 // import Input from '../../components/ui/Input';
 // import Spinner from '../../components/ui/Spinner';
 // import Badge from '../../components/ui/Badge';
-// import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type } from 'lucide-react';
+// import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type, ArrowLeft } from 'lucide-react';
 // import { formatDate } from '../../utils/formatters';
 // import toast from 'react-hot-toast';
 // import Fuse from 'fuse.js';
@@ -470,450 +468,479 @@
 //     }));
 //   };
 
-//   return (
-//     <div className="max-w-7xl mx-auto px-4 py-8">
-//       <div className="mb-8 flex items-center justify-between">
-//         <h1 className="text-3xl font-bold text-gray-900">Test Management</h1>
-//         <Button onClick={() => setShowForm(true)} className="text-black outline cursor-pointer hover:bg-gray-600 hover:text-white">
-//           <Plus className="w-4 h-4 mr-2" />
-//           Create Test
-//         </Button>
-//       </div>
+//   const handleGoBack = () => {
+//     setShowForm(false);
+//     setEditingTest(null);
+//     resetForm();
+//   };
 
-//       {/* Tests List */}
-//       <div className="space-y-4">
-//         {loading ? (
-//           <div className="flex justify-center py-8">
-//             <Spinner size={32} />
-//           </div>
-//         ) : tests.length > 0 ? (
-//           tests.map((test) => (
-//             <Card key={test._id} className="p-6">
-//               <div className="flex justify-between items-start">
-//                 <div className="flex-1">
-//                   <div className="flex items-center gap-3 mb-2">
-//                     <h3 className="text-xl font-semibold">{test.name}</h3>
-//                     <Badge text={test.type} />
-//                     {test.isActive ? (
-//                       <Badge text="Active" color="green" />
-//                     ) : (
-//                       <Badge text="Inactive" color="gray" />
+//   // Show test list view
+//   if (!showForm) {
+//     return (
+//       <div className="max-w-7xl mx-auto px-4 py-8">
+//         <div className="mb-8 flex items-center justify-between">
+//           <h1 className="text-3xl font-bold text-gray-900">Test Management</h1>
+//           <Button 
+//             onClick={() => setShowForm(true)} 
+//             className="text-black outline cursor-pointer hover:bg-gray-600 hover:text-white"
+//           >
+//             <Plus className="w-4 h-4 mr-2" />
+//             Create Test
+//           </Button>
+//         </div>
+
+//         {/* Tests List */}
+//         <div className="space-y-4">
+//           {loading ? (
+//             <div className="flex justify-center py-8">
+//               <Spinner size={32} />
+//             </div>
+//           ) : tests.length > 0 ? (
+//             tests.map((test) => (
+//               <Card key={test._id} className="p-6">
+//                 <div className="flex justify-between items-start">
+//                   <div className="flex-1">
+//                     <div className="flex items-center gap-3 mb-2">
+//                       <h3 className="text-xl font-semibold">{test.name}</h3>
+//                       <Badge text={test.type} />
+//                       {test.isActive ? (
+//                         <Badge text="Active" color="green" />
+//                       ) : (
+//                         <Badge text="Inactive" color="gray" />
+//                       )}
+//                     </div>
+//                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600 mb-2">
+//                       <div>
+//                         <span className="font-medium">Duration:</span> {test.duration} min
+//                       </div>
+//                       <div>
+//                         <span className="font-medium">Questions:</span> {test.questions?.length || 0}
+//                       </div>
+//                       <div>
+//                         <span className="font-medium">Total Marks:</span> {test.markingScheme?.totalMarks || 0}
+//                       </div>
+//                       <div>
+//                         <span className="font-medium">Marking:</span> +{test.markingScheme?.positiveMarks || 0}/-{test.markingScheme?.negativeMarks || 0}
+//                       </div>
+//                     </div>
+//                     {test.scheduledDate && (
+//                       <div className="flex gap-4 text-sm text-gray-500">
+//                         <span className="flex items-center gap-1">
+//                           <Calendar className="w-4 h-4" />
+//                           Scheduled: {formatDate(test.scheduledDate)}
+//                         </span>
+//                         {test.startTime && (
+//                           <span>Start: {new Date(test.startTime).toLocaleTimeString()}</span>
+//                         )}
+//                         {test.endTime && (
+//                           <span>End: {new Date(test.endTime).toLocaleTimeString()}</span>
+//                         )}
+//                       </div>
 //                     )}
 //                   </div>
-//                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600 mb-2">
-//                     <div>
-//                       <span className="font-medium">Duration:</span> {test.duration} min
-//                     </div>
-//                     <div>
-//                       <span className="font-medium">Questions:</span> {test.questions?.length || 0}
-//                     </div>
-//                     <div>
-//                       <span className="font-medium">Total Marks:</span> {test.markingScheme?.totalMarks || 0}
-//                     </div>
-//                     <div>
-//                       <span className="font-medium">Marking:</span> +{test.markingScheme?.positiveMarks || 0}/-{test.markingScheme?.negativeMarks || 0}
-//                     </div>
+//                   <div className="flex gap-2">
+//                     <Button variant="outline cursor-pointer" size="sm" onClick={() => handleEdit(test)}>
+//                       <Edit className="w-4 h-4" />
+//                     </Button>
+//                     <Button className="text-red-400 cursor-pointer" variant="danger" size="sm" onClick={() => handleDelete(test._id)}>
+//                       <Trash2 className="w-4 h-4" />
+//                     </Button>
 //                   </div>
-//                   {test.scheduledDate && (
-//                     <div className="flex gap-4 text-sm text-gray-500">
-//                       <span className="flex items-center gap-1">
-//                         <Calendar className="w-4 h-4" />
-//                         Scheduled: {formatDate(test.scheduledDate)}
-//                       </span>
-//                       {test.startTime && (
-//                         <span>Start: {new Date(test.startTime).toLocaleTimeString()}</span>
-//                       )}
-//                       {test.endTime && (
-//                         <span>End: {new Date(test.endTime).toLocaleTimeString()}</span>
-//                       )}
-//                     </div>
-//                   )}
 //                 </div>
-//                 <div className="flex gap-2">
-//                   <Button variant="outline cursor-pointer" size="sm" onClick={() => handleEdit(test)}>
-//                     <Edit className="w-4 h-4" />
-//                   </Button>
-//                   <Button className="text-red-400 cursor-pointer" variant="danger" size="sm" onClick={() => handleDelete(test._id)}>
-//                     <Trash2 className="w-4 h-4" />
-//                   </Button>
-//                 </div>
-//               </div>
-//             </Card>
-//           ))
-//         ) : (
-//           <Card className="p-12 text-center text-gray-500">No tests found.</Card>
-//         )}
+//               </Card>
+//             ))
+//           ) : (
+//             <Card className="p-12 text-center text-gray-500">No tests found.</Card>
+//           )}
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // Show full-page form view
+//   return (
+//     <div className="max-w-7xl mx-auto px-4 py-8">
+//       {/* Header with Back Button */}
+//       <div className="mb-6 flex items-center">
+//         <Button
+//           variant="outline"
+//           onClick={handleGoBack}
+//           className="flex items-center gap-2 mr-4 cursor-pointer"
+//         >
+//           <ArrowLeft className="w-4 h-4" />
+//           Go Back to Test Management
+//         </Button>
+//         <h1 className="text-3xl font-bold text-gray-900">
+//           {editingTest ? 'Edit Test' : 'Create New Test'}
+//         </h1>
 //       </div>
 
-//       {/* Create/Edit Modal */}
-//       {showForm && (
-//         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-//           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
-//             <h2 className="text-2xl font-bold mb-6">
-//               {editingTest ? 'Edit Test' : 'Create New Test'}
-//             </h2>
+//       <form onSubmit={handleSubmit} className="space-y-6">
+//         {/* Basic Details */}
+//         <Card className="p-6">
+//           <h2 className="text-xl font-semibold mb-4">Basic Details</h2>
+//           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Test Name *</label>
+//               <Input
+//                 value={formData.name}
+//                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+//                 required
+//                 placeholder="e.g., NEET Mock Test 1"
+//               />
+//             </div>
 
-//             <form onSubmit={handleSubmit} className="space-y-6">
-//               {/* Basic Details */}
-//               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                 <div>
-//                   <label className="block text-sm font-medium mb-1">Test Name *</label>
-//                   <Input
-//                     value={formData.name}
-//                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-//                     required
-//                     placeholder="e.g., NEET Mock Test 1"
-//                   />
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Test Type *</label>
+//               <select
+//                 value={formData.type}
+//                 onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+//                 className="w-full rounded border border-gray-300 px-3 py-2"
+//                 required
+//               >
+//                 <option value="DPP_TEST">DPP Test</option>
+//                 <option value="NEET_MOCK">NEET Mock Test</option>
+//               </select>
+//             </div>
+
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Duration (minutes) *</label>
+//               <Input
+//                 type="number"
+//                 value={formData.duration}
+//                 onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) })}
+//                 required
+//                 min="1"
+//               />
+//             </div>
+
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Scheduled Date *</label>
+//               <Input
+//                 type="date"
+//                 value={formData.scheduledDate}
+//                 onChange={(e) => setFormData({ ...formData, scheduledDate: e.target.value })}
+//                 required
+//               />
+//             </div>
+
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Start Time *</label>
+//               <Input
+//                 type="datetime-local"
+//                 value={formData.startTime}
+//                 onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+//                 required
+//               />
+//             </div>
+
+//             <div>
+//               <label className="block text-sm font-medium mb-1">End Time *</label>
+//               <Input
+//                 type="datetime-local"
+//                 value={formData.endTime}
+//                 onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+//                 required
+//               />
+//             </div>
+//           </div>
+//         </Card>
+
+//         {/* Marking Scheme */}
+//         <Card className="p-6">
+//           <h3 className="text-xl font-semibold mb-4">Marking Scheme</h3>
+//           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Total Marks *</label>
+//               <Input
+//                 type="number"
+//                 step="0.01"
+//                 value={formData.markingScheme.totalMarks}
+//                 onChange={(e) => handleMarkingSchemeChange('totalMarks', e.target.value)}
+//                 required
+//                 min="0"
+//               />
+//             </div>
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Positive Marks *</label>
+//               <Input
+//                 type="number"
+//                 step="0.01"
+//                 value={formData.markingScheme.positiveMarks}
+//                 onChange={(e) => handleMarkingSchemeChange('positiveMarks', e.target.value)}
+//                 required
+//                 min="0"
+//               />
+//             </div>
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Negative Marks *</label>
+//               <Input
+//                 type="number"
+//                 step="0.01"
+//                 value={formData.markingScheme.negativeMarks}
+//                 onChange={(e) => handleMarkingSchemeChange('negativeMarks', e.target.value)}
+//                 required
+//                 min="0"
+//               />
+//             </div>
+//           </div>
+//         </Card>
+
+//         {/* Active Status */}
+//         <Card className="p-6">
+//           <div className="flex items-center gap-3">
+//             <input
+//               type="checkbox"
+//               checked={formData.isActive}
+//               onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+//               id="isActiveCheck"
+//               className="w-4 h-4"
+//             />
+//             <label htmlFor="isActiveCheck" className="text-sm font-medium">
+//               Active (visible to students)
+//             </label>
+//           </div>
+//         </Card>
+
+//         {/* Question Selection */}
+//         <Card className="p-6">
+//           <div className="flex items-center justify-between mb-4">
+//             <h3 className="text-xl font-semibold">
+//               Select Questions ({formData.questions.length} selected) *
+//             </h3>
+//             <div className="flex gap-2">
+//               <Button
+//                 type="button"
+//                 variant="outline"
+//                 size="sm"
+//                 onClick={() => setShowAddQuestion(!showAddQuestion)}
+//                 className="cursor-pointer"
+//               >
+//                 <Plus className="w-4 h-4 mr-1" />
+//                 Add New Question
+//               </Button>
+//               <Button
+//                 type="button"
+//                 variant="outline"
+//                 size="sm"
+//                 onClick={() => selectQuestionsByFilter('Physics')}
+//                 className="cursor-pointer"
+//               >
+//                 + Physics
+//               </Button>
+//               <Button
+//                 type="button"
+//                 variant="outline"
+//                 size="sm"
+//                 onClick={() => selectQuestionsByFilter('Chemistry')}
+//                 className="cursor-pointer"
+//               >
+//                 + Chemistry
+//               </Button>
+//               <Button
+//                 type="button"
+//                 variant="outline"
+//                 size="sm"
+//                 onClick={() => selectQuestionsByFilter('Biology')}
+//                 className="cursor-pointer"
+//               >
+//                 + Biology
+//               </Button>
+//             </div>
+//           </div>
+
+//           {/* Add New Question Form */}
+//           {showAddQuestion && (
+//             <Card className="p-4 mb-4 bg-blue-50 border-blue-200">
+//               <div className="flex items-center justify-between mb-3">
+//                 <h3 className="font-semibold">Create New Question</h3>
+//                 <button
+//                   type="button"
+//                   onClick={() => setShowAddQuestion(false)}
+//                   className="text-gray-500 hover:text-gray-700 cursor-pointer"
+//                 >
+//                   <X className="w-5 h-5" />
+//                 </button>
+//               </div>
+
+//               <div className="space-y-3">
+//                 <div className="grid grid-cols-3 gap-3">
+//                   <div>
+//                     <label className="block text-xs font-medium mb-1">Subject *</label>
+//                     <select
+//                       value={newQuestion.subject}
+//                       onChange={(e) =>
+//                         setNewQuestion({ ...newQuestion, subject: e.target.value })
+//                       }
+//                       className="w-full rounded border border-gray-300 px-2 py-1 text-sm"
+//                     >
+//                       <option value="Physics">Physics</option>
+//                       <option value="Chemistry">Chemistry</option>
+//                       <option value="Biology">Biology</option>
+//                     </select>
+//                   </div>
+//                   <div>
+//                     <label className="block text-xs font-medium mb-1">Chapter *</label>
+//                     <Input
+//                       value={newQuestion.chapter}
+//                       onChange={(e) =>
+//                         setNewQuestion({ ...newQuestion, chapter: e.target.value })
+//                       }
+//                       placeholder="Chapter name"
+//                       className="text-sm"
+//                     />
+//                   </div>
+//                   <div>
+//                     <label className="block text-xs font-medium mb-1">Topic *</label>
+//                     <Input
+//                       value={newQuestion.topic}
+//                       onChange={(e) =>
+//                         setNewQuestion({ ...newQuestion, topic: e.target.value })
+//                       }
+//                       placeholder="Topic name"
+//                       className="text-sm"
+//                     />
+//                   </div>
 //                 </div>
 
 //                 <div>
-//                   <label className="block text-sm font-medium mb-1">Test Type *</label>
+//                   <label className="block text-xs font-medium mb-1">Difficulty</label>
 //                   <select
-//                     value={formData.type}
-//                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-//                     className="w-full rounded border border-gray-300 px-3 py-2"
-//                     required
+//                     value={newQuestion.difficulty}
+//                     onChange={(e) =>
+//                       setNewQuestion({ ...newQuestion, difficulty: e.target.value })
+//                     }
+//                     className="w-full rounded border border-gray-300 px-2 py-1 text-sm"
 //                   >
-//                     <option value="DPP_TEST">DPP Test</option>
-//                     <option value="NEET_MOCK">NEET Mock Test</option>
+//                     <option value="Easy">Easy</option>
+//                     <option value="Medium">Medium</option>
+//                     <option value="Hard">Hard</option>
 //                   </select>
 //                 </div>
 
 //                 <div>
-//                   <label className="block text-sm font-medium mb-1">Duration (minutes) *</label>
-//                   <Input
-//                     type="number"
-//                     value={formData.duration}
-//                     onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) })}
-//                     required
-//                     min="1"
+//                   <label className="block text-xs font-medium mb-1">Question Text *</label>
+//                   <RichTextEditor
+//                     value={newQuestion.questionText}
+//                     onChange={(value) =>
+//                       setNewQuestion({ ...newQuestion, questionText: value })
+//                     }
+//                     placeholder="Enter question text"
 //                   />
 //                 </div>
 
 //                 <div>
-//                   <label className="block text-sm font-medium mb-1">Scheduled Date *</label>
-//                   <Input
-//                     type="date"
-//                     value={formData.scheduledDate}
-//                     onChange={(e) => setFormData({ ...formData, scheduledDate: e.target.value })}
-//                     required
-//                   />
-//                 </div>
-
-//                 <div>
-//                   <label className="block text-sm font-medium mb-1">Start Time *</label>
-//                   <Input
-//                     type="datetime-local"
-//                     value={formData.startTime}
-//                     onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-//                     required
-//                   />
-//                 </div>
-
-//                 <div>
-//                   <label className="block text-sm font-medium mb-1">End Time *</label>
-//                   <Input
-//                     type="datetime-local"
-//                     value={formData.endTime}
-//                     onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
-//                     required
-//                   />
-//                 </div>
-//               </div>
-
-//               {/* Marking Scheme */}
-//               <div className="border-t pt-4">
-//                 <h3 className="text-lg font-medium mb-3">Marking Scheme</h3>
-//                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//                   <div>
-//                     <label className="block text-sm font-medium mb-1">Total Marks *</label>
-//                     <Input
-//                       type="number"
-//                       step="0.01"
-//                       value={formData.markingScheme.totalMarks}
-//                       onChange={(e) => handleMarkingSchemeChange('totalMarks', e.target.value)}
-//                       required
-//                       min="0"
-//                     />
-//                   </div>
-//                   <div>
-//                     <label className="block text-sm font-medium mb-1">Positive Marks *</label>
-//                     <Input
-//                       type="number"
-//                       step="0.01"
-//                       value={formData.markingScheme.positiveMarks}
-//                       onChange={(e) => handleMarkingSchemeChange('positiveMarks', e.target.value)}
-//                       required
-//                       min="0"
-//                     />
-//                   </div>
-//                   <div>
-//                     <label className="block text-sm font-medium mb-1">Negative Marks *</label>
-//                     <Input
-//                       type="number"
-//                       step="0.01"
-//                       value={formData.markingScheme.negativeMarks}
-//                       onChange={(e) => handleMarkingSchemeChange('negativeMarks', e.target.value)}
-//                       required
-//                       min="0"
-//                     />
-//                   </div>
-//                 </div>
-//               </div>
-
-//               <div className="flex items-center gap-3">
-//                 <input
-//                   type="checkbox"
-//                   checked={formData.isActive}
-//                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-//                   id="isActiveCheck"
-//                   className="w-4 h-4"
-//                 />
-//                 <label htmlFor="isActiveCheck" className="text-sm font-medium">
-//                   Active (visible to students)
-//                 </label>
-//               </div>
-
-//               {/* Question Selection */}
-//               <div className="border-t pt-4">
-//                 <div className="flex items-center justify-between mb-3">
-//                   <label className="block text-sm font-medium">
-//                     Select Questions ({formData.questions.length} selected) *
-//                   </label>
-//                   {/* <div className="flex gap-2">
-//                     <Button
-//                       type="button"
-//                       variant="outline"
-//                       size="sm"
-//                       onClick={() => setShowAddQuestion(!showAddQuestion)}
-//                     >
-//                       <Plus className="w-4 h-4 mr-1" />
-//                       Add New Question
-//                     </Button>
-//                     <Button
-//                       type="button"
-//                       variant="outline"
-//                       size="sm"
-//                       onClick={() => selectQuestionsByFilter('Physics')}
-//                     >
-//                       + Physics
-//                     </Button>
-//                     <Button
-//                       type="button"
-//                       variant="outline"
-//                       size="sm"
-//                       onClick={() => selectQuestionsByFilter('Chemistry')}
-//                     >
-//                       + Chemistry
-//                     </Button>
-//                     <Button
-//                       type="button"
-//                       variant="outline"
-//                       size="sm"
-//                       onClick={() => selectQuestionsByFilter('Biology')}
-//                     >
-//                       + Biology
-//                     </Button>
-//                   </div> */}
-//                 </div>
-
-//                 {/* Add New Question Form */}
-//                 {showAddQuestion && (
-//                   <Card className="p-4 mb-4 bg-blue-50 border-blue-200">
-//                     <div className="flex items-center justify-between mb-3">
-//                       <h3 className="font-semibold">Create New Question</h3>
-//                       <button
-//                         type="button"
-//                         onClick={() => setShowAddQuestion(false)}
-//                         className="text-gray-500 hover:text-gray-700"
-//                       >
-//                         <X className="w-5 h-5" />
-//                       </button>
-//                     </div>
-
-//                     <div className="space-y-3">
-//                       <div className="grid grid-cols-3 gap-3">
-//                         <div>
-//                           <label className="block text-xs font-medium mb-1">Subject *</label>
-//                           <select
-//                             value={newQuestion.subject}
-//                             onChange={(e) =>
-//                               setNewQuestion({ ...newQuestion, subject: e.target.value })
-//                             }
-//                             className="w-full rounded border border-gray-300 px-2 py-1 text-sm"
-//                           >
-//                             <option value="Physics">Physics</option>
-//                             <option value="Chemistry">Chemistry</option>
-//                             <option value="Biology">Biology</option>
-//                           </select>
-//                         </div>
-//                         <div>
-//                           <label className="block text-xs font-medium mb-1">Chapter *</label>
-//                           <Input
-//                             value={newQuestion.chapter}
-//                             onChange={(e) =>
-//                               setNewQuestion({ ...newQuestion, chapter: e.target.value })
-//                             }
-//                             placeholder="Chapter name"
-//                             className="text-sm"
-//                           />
-//                         </div>
-//                         <div>
-//                           <label className="block text-xs font-medium mb-1">Topic *</label>
-//                           <Input
-//                             value={newQuestion.topic}
-//                             onChange={(e) =>
-//                               setNewQuestion({ ...newQuestion, topic: e.target.value })
-//                             }
-//                             placeholder="Topic name"
-//                             className="text-sm"
-//                           />
-//                         </div>
-//                       </div>
-
-//                       <div>
-//                         <label className="block text-xs font-medium mb-1">Difficulty</label>
-//                         <select
-//                           value={newQuestion.difficulty}
-//                           onChange={(e) =>
-//                             setNewQuestion({ ...newQuestion, difficulty: e.target.value })
-//                           }
-//                           className="w-full rounded border border-gray-300 px-2 py-1 text-sm"
-//                         >
-//                           <option value="Easy">Easy</option>
-//                           <option value="Medium">Medium</option>
-//                           <option value="Hard">Hard</option>
-//                         </select>
-//                       </div>
-
-//                       <div>
-//                         <label className="block text-xs font-medium mb-1">Question Text *</label>
+//                   <label className="block text-xs font-medium mb-1">Options *</label>
+//                   {newQuestion.options.map((opt, i) => (
+//                     <div key={i} className="flex gap-2 mb-2">
+//                       <input
+//                         type="radio"
+//                         name="correctOption"
+//                         checked={opt.isCorrect}
+//                         onChange={() => updateNewQuestionOption(i, 'isCorrect', true)}
+//                         className="mt-1 cursor-pointer"
+//                       />
+//                       <div className="flex-1">
 //                         <RichTextEditor
-//                           value={newQuestion.questionText}
-//                           onChange={(value) =>
-//                             setNewQuestion({ ...newQuestion, questionText: value })
-//                           }
-//                           placeholder="Enter question text"
+//                           value={opt.optionText}
+//                           onChange={(value) => updateNewQuestionOption(i, 'optionText', value)}
+//                           placeholder={`Option ${i + 1}`}
 //                         />
 //                       </div>
-
-//                       <div>
-//                         <label className="block text-xs font-medium mb-1">Options *</label>
-//                         {newQuestion.options.map((opt, i) => (
-//                           <div key={i} className="flex gap-2 mb-2">
-//                             <input
-//                               type="radio"
-//                               name="correctOption"
-//                               checked={opt.isCorrect}
-//                               onChange={() => updateNewQuestionOption(i, 'isCorrect', true)}
-//                               className="mt-1"
-//                             />
-//                             <div className="flex-1">
-//                               <RichTextEditor
-//                                 value={opt.optionText}
-//                                 onChange={(value) => updateNewQuestionOption(i, 'optionText', value)}
-//                                 placeholder={`Option ${i + 1}`}
-//                               />
-//                             </div>
-//                           </div>
-//                         ))}
-//                       </div>
-
-//                       <Button
-//                         type="button"
-//                         onClick={handleCreateNewQuestion}
-//                         disabled={loading}
-//                         size="sm"
-//                         className="w-full bg-red-400"
-//                       >
-//                         {loading ? 'Creating...' : 'Create & Add to Test'}
-//                       </Button>
 //                     </div>
-//                   </Card>
-//                 )}
-
-//                 {/* Search Bar */}
-//                 <div className="relative mb-3">
-//                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-//                   <Input
-//                     placeholder="Search questions by keyword, subject, chapter, topic..."
-//                     value={searchTerm}
-//                     onChange={(e) => setSearchTerm(e.target.value)}
-//                     className="pl-10"
-//                   />
-//                   {searchTerm && (
-//                     <button
-//                       type="button"
-//                       onClick={() => setSearchTerm('')}
-//                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-//                     >
-//                       <X className="w-4 h-4" />
-//                     </button>
-//                   )}
+//                   ))}
 //                 </div>
 
-//                 {/* Questions List */}
-//                 <div className="max-h-64 overflow-y-auto border rounded p-3 space-y-2">
-//                   {filteredQuestions.length === 0 ? (
-//                     <p className="text-center text-gray-500 py-4 text-sm">
-//                       {searchTerm ? 'No questions match your search' : 'No questions available'}
-//                     </p>
-//                   ) : (
-//                     filteredQuestions.map((q) => (
-//                       <div key={q._id} className="flex items-start gap-3 p-2 hover:bg-gray-50 rounded">
-//                         <input
-//                           type="checkbox"
-//                           checked={formData.questions.includes(q._id)}
-//                           onChange={() => toggleQuestionSelection(q._id)}
-//                           className="mt-1"
-//                         />
-//                         <div className="flex-1">
-//                           {/* Use SafeHTML to display formatted question text */}
-//                           <SafeHTML 
-//                             html={q.questionText} 
-//                             className="text-sm font-medium"
-//                           />
-//                           <div className="flex gap-2 mt-1">
-//                             <Badge text={q.subject} />
-//                             <Badge text={q.difficulty} />
-//                             <Badge text={`${q.chapter} → ${q.topic}`} />
-//                           </div>
-//                         </div>
-//                       </div>
-//                     ))
-//                   )}
-//                 </div>
-//               </div>
-
-//               {/* Form Actions */}
-//               <div className="flex gap-3 justify-end pt-4 border-t">
-//                 <Button className="cursor-pointer outline"
+//                 <Button
 //                   type="button"
-//                   variant="outline"
-//                   onClick={() => {
-//                     setShowForm(false);
-//                     setEditingTest(null);
-//                     resetForm();
-//                   }}
+//                   onClick={handleCreateNewQuestion}
+//                   disabled={loading}
+//                   size="sm"
+//                   className="w-full bg-red-400 cursor-pointer"
 //                 >
-//                   Cancel
-//                 </Button>
-//                 <Button type="submit" disabled={loading} className="text-black outline cursor-pointer hover:bg-gray-800 hover:text-white">
-//                   {loading ? 'Saving...' : editingTest ? 'Update Test' : 'Create Test'}
+//                   {loading ? 'Creating...' : 'Create & Add to Test'}
 //                 </Button>
 //               </div>
-//             </form>
+//             </Card>
+//           )}
+
+//           {/* Search Bar */}
+//           <div className="relative mb-3">
+//             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+//             <Input
+//               placeholder="Search questions by keyword, subject, chapter, topic..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//               className="pl-10"
+//             />
+//             {searchTerm && (
+//               <button
+//                 type="button"
+//                 onClick={() => setSearchTerm('')}
+//                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+//               >
+//                 <X className="w-4 h-4" />
+//               </button>
+//             )}
 //           </div>
+
+//           {/* Questions List */}
+//           <div className="max-h-96 overflow-y-auto border rounded p-3 space-y-2">
+//             {filteredQuestions.length === 0 ? (
+//               <p className="text-center text-gray-500 py-4 text-sm">
+//                 {searchTerm ? 'No questions match your search' : 'No questions available'}
+//               </p>
+//             ) : (
+//               filteredQuestions.map((q) => (
+//                 <div key={q._id} className="flex items-start gap-3 p-2 hover:bg-gray-50 rounded">
+//                   <input
+//                     type="checkbox"
+//                     checked={formData.questions.includes(q._id)}
+//                     onChange={() => toggleQuestionSelection(q._id)}
+//                     className="mt-1 cursor-pointer"
+//                   />
+//                   <div className="flex-1">
+//                     {/* Use SafeHTML to display formatted question text */}
+//                     <SafeHTML 
+//                       html={q.questionText} 
+//                       className="text-sm font-medium"
+//                     />
+//                     <div className="flex gap-2 mt-1">
+//                       <Badge text={q.subject} />
+//                       <Badge text={q.difficulty} />
+//                       <Badge text={`${q.chapter} → ${q.topic}`} />
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))
+//             )}
+//           </div>
+//         </Card>
+
+//         {/* Form Actions */}
+//         <div className="flex gap-3 justify-end pt-4">
+//           <Button 
+//             type="button" 
+//             variant="outline" 
+//             onClick={handleGoBack}
+//             className="cursor-pointer"
+//           >
+//             Cancel
+//           </Button>
+//           <Button 
+//             type="submit" 
+//             disabled={loading} 
+//             className="text-black outline cursor-pointer hover:bg-gray-800 hover:text-white"
+//           >
+//             {loading ? 'Saving...' : editingTest ? 'Update Test' : 'Create Test'}
+//           </Button>
 //         </div>
-//       )}
+//       </form>
 //     </div>
 //   );
 // };
 
 // export default TestManagement;
-
-
-
 
 
 
@@ -929,7 +956,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Spinner from '../../components/ui/Spinner';
 import Badge from '../../components/ui/Badge';
-import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type, ArrowLeft } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type, ArrowLeft, Filter, CheckSquare, Square } from 'lucide-react';
 import { formatDate } from '../../utils/formatters';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
@@ -1103,6 +1130,122 @@ const SafeHTML = ({ html, className = '' }) => {
   );
 };
 
+// Date Filter Component
+const DateFilter = ({ 
+  startDate, 
+  endDate, 
+  onStartDateChange, 
+  onEndDateChange, 
+  onApplyFilter, 
+  onClearFilter,
+  isFilterActive 
+}) => {
+  return (
+    <Card className="p-4 mb-4 bg-gray-50 border border-gray-200">
+      <div className="flex items-center gap-2 mb-3">
+        <Filter className="w-4 h-4 text-gray-600" />
+        <h3 className="font-medium text-gray-800">Filter Questions by Creation Date</h3>
+        {isFilterActive && (
+          <Badge text="Filter Active" color="blue" />
+        )}
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+        <div>
+          <label className="block text-sm font-medium mb-2 text-gray-700">
+            Start Date & Time
+          </label>
+          <Input
+            type="datetime-local"
+            value={startDate}
+            onChange={(e) => onStartDateChange(e.target.value)}
+            className="w-full"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2 text-gray-700">
+            End Date & Time
+          </label>
+          <Input
+            type="datetime-local"
+            value={endDate}
+            onChange={(e) => onEndDateChange(e.target.value)}
+            className="w-full"
+          />
+        </div>
+        
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            onClick={onApplyFilter}
+            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
+            size="sm"
+          >
+            Apply Filter
+          </Button>
+          <Button
+            type="button"
+            onClick={onClearFilter}
+            variant="outline"
+            className="flex-1 cursor-pointer"
+            size="sm"
+          >
+            Clear
+          </Button>
+        </div>
+      </div>
+      
+      {isFilterActive && (
+        <div className="mt-3 text-xs text-gray-600">
+          <p>Showing questions created between {new Date(startDate).toLocaleString()} and {new Date(endDate).toLocaleString()}</p>
+        </div>
+      )}
+    </Card>
+  );
+};
+
+// Question Statistics Component
+const QuestionStatistics = ({ questions, selectedQuestions }) => {
+  const stats = useMemo(() => {
+    const total = questions.length;
+    const selected = selectedQuestions.length;
+    
+    const bySubject = questions.reduce((acc, question) => {
+      const subject = question.subject || 'Unknown';
+      acc[subject] = (acc[subject] || 0) + 1;
+      return acc;
+    }, {});
+    
+    return { total, selected, bySubject };
+  }, [questions, selectedQuestions]);
+
+  if (questions.length === 0) return null;
+
+  return (
+    <Card className="p-4 mb-4 bg-green-50 border border-green-200">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-green-600">{stats.total}</div>
+          <div className="text-gray-600">Total Questions</div>
+        </div>
+        
+        <div className="text-center">
+          <div className="text-2xl font-bold text-blue-600">{stats.selected}</div>
+          <div className="text-gray-600">Selected</div>
+        </div>
+        
+        {Object.entries(stats.bySubject).map(([subject, count]) => (
+          <div key={subject} className="text-center">
+            <div className="text-xl font-bold text-purple-600">{count}</div>
+            <div className="text-gray-600">{subject}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+};
+
 const TestManagement = () => {
   const [tests, setTests] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -1111,6 +1254,11 @@ const TestManagement = () => {
   const [editingTest, setEditingTest] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddQuestion, setShowAddQuestion] = useState(false);
+
+  // Date filter states
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [isDateFilterActive, setIsDateFilterActive] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -1169,21 +1317,36 @@ const TestManagement = () => {
     }
   };
 
-  // Fuzzy search using Fuse.js
+  // Apply date filter to questions
+  const filteredByDate = useMemo(() => {
+    if (!isDateFilterActive || !startDate || !endDate) {
+      return questions;
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    return questions.filter(question => {
+      const questionDate = new Date(question.createdAt);
+      return questionDate >= start && questionDate <= end;
+    });
+  }, [questions, startDate, endDate, isDateFilterActive]);
+
+  // Fuzzy search using Fuse.js on date-filtered questions
   const fuse = useMemo(() => {
-    return new Fuse(questions, {
+    return new Fuse(filteredByDate, {
       keys: ['questionText', 'subject', 'chapter', 'topic'],
       threshold: 0.3,
       ignoreLocation: true,
       minMatchCharLength: 2,
     });
-  }, [questions]);
+  }, [filteredByDate]);
 
   const filteredQuestions = useMemo(() => {
-    if (!searchTerm.trim()) return questions;
+    if (!searchTerm.trim()) return filteredByDate;
     const results = fuse.search(searchTerm);
     return results.map((result) => result.item);
-  }, [searchTerm, fuse, questions]);
+  }, [searchTerm, fuse, filteredByDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -1277,6 +1440,10 @@ const TestManagement = () => {
     setSearchTerm('');
     setShowAddQuestion(false);
     resetNewQuestion();
+    // Clear date filters
+    setStartDate('');
+    setEndDate('');
+    setIsDateFilterActive(false);
   };
 
   const resetNewQuestion = () => {
@@ -1302,6 +1469,26 @@ const TestManagement = () => {
         ? prev.questions.filter((id) => id !== questionId)
         : [...prev.questions, questionId],
     }));
+  };
+
+  // Select all questions from current filtered list
+  const selectAllFilteredQuestions = () => {
+    const filteredQuestionIds = filteredQuestions.map(q => q._id);
+    setFormData((prev) => ({
+      ...prev,
+      questions: [...new Set([...prev.questions, ...filteredQuestionIds])],
+    }));
+    toast.success(`Added ${filteredQuestionIds.length} questions to test`);
+  };
+
+  // Deselect all questions from current filtered list
+  const deselectAllFilteredQuestions = () => {
+    const filteredQuestionIds = filteredQuestions.map(q => q._id);
+    setFormData((prev) => ({
+      ...prev,
+      questions: prev.questions.filter(id => !filteredQuestionIds.includes(id)),
+    }));
+    toast.success(`Removed ${filteredQuestionIds.length} questions from test`);
   };
 
   const selectQuestionsByFilter = (subject) => {
@@ -1392,6 +1579,50 @@ const TestManagement = () => {
     setShowForm(false);
     setEditingTest(null);
     resetForm();
+  };
+
+  // Date filter handlers
+  const handleApplyDateFilter = () => {
+    if (!startDate || !endDate) {
+      toast.error('Please select both start and end dates');
+      return;
+    }
+
+    if (new Date(startDate) > new Date(endDate)) {
+      toast.error('Start date cannot be after end date');
+      return;
+    }
+
+    setIsDateFilterActive(true);
+    toast.success('Date filter applied');
+  };
+
+  const handleClearDateFilter = () => {
+    setStartDate('');
+    setEndDate('');
+    setIsDateFilterActive(false);
+    toast.success('Date filter cleared');
+  };
+
+  // Check if all filtered questions are selected
+  const allFilteredSelected = useMemo(() => {
+    if (filteredQuestions.length === 0) return false;
+    return filteredQuestions.every(q => formData.questions.includes(q._id));
+  }, [filteredQuestions, formData.questions]);
+
+  // Check if some filtered questions are selected
+  const someFilteredSelected = useMemo(() => {
+    if (filteredQuestions.length === 0) return false;
+    return filteredQuestions.some(q => formData.questions.includes(q._id)) && !allFilteredSelected;
+  }, [filteredQuestions, formData.questions, allFilteredSelected]);
+
+  // Toggle select all for filtered questions
+  const toggleSelectAllFiltered = () => {
+    if (allFilteredSelected) {
+      deselectAllFilteredQuestions();
+    } else {
+      selectAllFilteredQuestions();
+    }
   };
 
   // Show test list view
@@ -1629,7 +1860,7 @@ const TestManagement = () => {
               Select Questions ({formData.questions.length} selected) *
             </h3>
             <div className="flex gap-2">
-              <Button
+              {/* <Button
                 type="button"
                 variant="outline"
                 size="sm"
@@ -1638,7 +1869,7 @@ const TestManagement = () => {
               >
                 <Plus className="w-4 h-4 mr-1" />
                 Add New Question
-              </Button>
+              </Button> */}
               <Button
                 type="button"
                 variant="outline"
@@ -1667,6 +1898,64 @@ const TestManagement = () => {
                 + Biology
               </Button>
             </div>
+          </div>
+
+          {/* Date Filter Component */}
+          <DateFilter
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+            onApplyFilter={handleApplyDateFilter}
+            onClearFilter={handleClearDateFilter}
+            isFilterActive={isDateFilterActive}
+          />
+
+          {/* Question Statistics */}
+          <QuestionStatistics 
+            questions={filteredQuestions}
+            selectedQuestions={formData.questions}
+          />
+
+          {/* Search and Select All Bar */}
+          <div className="flex gap-3 mb-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search questions by keyword, subject, chapter, topic..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            
+            {filteredQuestions.length > 0 && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={toggleSelectAllFiltered}
+                className="flex items-center gap-2 whitespace-nowrap cursor-pointer"
+                size="sm"
+              >
+                {allFilteredSelected ? (
+                  <CheckSquare className="w-4 h-4" />
+                ) : someFilteredSelected ? (
+                  <Square className="w-4 h-4" />
+                ) : (
+                  <Square className="w-4 h-4" />
+                )}
+                {allFilteredSelected ? 'Deselect All' : 'Select All'}
+              </Button>
+            )}
           </div>
 
           {/* Add New Question Form */}
@@ -1784,31 +2073,11 @@ const TestManagement = () => {
             </Card>
           )}
 
-          {/* Search Bar */}
-          <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              placeholder="Search questions by keyword, subject, chapter, topic..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-            {searchTerm && (
-              <button
-                type="button"
-                onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-
           {/* Questions List */}
           <div className="max-h-96 overflow-y-auto border rounded p-3 space-y-2">
             {filteredQuestions.length === 0 ? (
               <p className="text-center text-gray-500 py-4 text-sm">
-                {searchTerm ? 'No questions match your search' : 'No questions available'}
+                {searchTerm || isDateFilterActive ? 'No questions match your search/filter criteria' : 'No questions available'}
               </p>
             ) : (
               filteredQuestions.map((q) => (
@@ -1829,6 +2098,10 @@ const TestManagement = () => {
                       <Badge text={q.subject} />
                       <Badge text={q.difficulty} />
                       <Badge text={`${q.chapter} → ${q.topic}`} />
+                      <Badge 
+  text={new Date(q.createdAt).toLocaleDateString('en-GB')} 
+  color="gray"
+/>
                     </div>
                   </div>
                 </div>

@@ -1,7 +1,5 @@
 
 
-
-
 // import React, { useEffect, useMemo, useState, useRef } from 'react';
 // import { createQuestion, updateQuestion, deleteQuestion } from '../../services/admin';
 // import { getQuestions } from '../../services/questions';
@@ -14,6 +12,23 @@
 // import { formatRelativeTime } from '../../utils/formatters';
 // import toast from 'react-hot-toast';
 // import Fuse from 'fuse.js';
+
+// // Format text for display (use this when displaying the content)
+// export const formatTextWithHTML = (text) => {
+//   if (!text) return '';
+  
+//   // First, split by newlines and process each line
+//   const lines = text.split('\n');
+  
+//   // Process each line with HTML formatting and join with <br>
+//   return lines.map(line => 
+//     line
+//       .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
+//       .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
+//       .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
+//       .replace(/<sub>(.*?)<\/sub>/g, '<sub>$1</sub>')
+//   ).join('<br>');
+// };
 
 // // Rich Text Editor Component
 // const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
@@ -193,42 +208,18 @@
 //         placeholder={placeholder}
 //       />
 
-//       {/* Preview (optional) */}
+//       {/* Preview */}
 //       {value && (
 //         <div className="p-3 bg-gray-50 border-t border-gray-200">
 //           <div className="text-xs text-gray-600 font-medium mb-1">Preview:</div>
-//           <div className="text-sm text-gray-800 min-h-6">
-//             {value
-//               .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
-//               .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
-//               .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
-//               .replace(/<sub>(.*?)<\/sub>/g, '<sub>$1</sub>')
-//               .split('\n').map((line, index) => (
-//                 <div key={index} dangerouslySetInnerHTML={{ 
-//                   __html: line
-//                     .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
-//                     .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
-//                     .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
-//                     .replace(/<sub>(.*?)<\/sub>/g, '<sub>$1</sub>')
-//                 }} />
-//               ))
-//             }
-//           </div>
+//           <div 
+//             className="text-sm text-gray-800 min-h-6 whitespace-pre-wrap"
+//             dangerouslySetInnerHTML={{ __html: formatTextWithHTML(value) }}
+//           />
 //         </div>
 //       )}
 //     </div>
 //   );
-// };
-
-// // Format text for display (use this when displaying the content)
-// export const formatTextWithHTML = (text) => {
-//   if (!text) return '';
-  
-//   return text
-//     .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
-//     .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
-//     .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
-//     .replace(/<sub>(.*?)<\/sub>/g, '<sub>$1</sub>');
 // };
 
 // // Custom dropdown input component for chapters, topics, and exams
@@ -919,7 +910,7 @@
 //                   {q.exam && <Badge variant="info" text={`Exam: ${q.exam}`} />}
 //                 </div>
 //                 <div 
-//                   className="font-medium mb-2 text-gray-800 line-clamp-2"
+//                   className="font-medium mb-2 text-gray-800 line-clamp-2 whitespace-pre-wrap"
 //                   dangerouslySetInnerHTML={{ __html: formatTextWithHTML(q.questionText) }}
 //                 />
 //                 {(q.questionImage || q.options?.some(opt => opt.optionImage)) && (
@@ -1248,8 +1239,6 @@
 
 
 
-
-
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { createQuestion, updateQuestion, deleteQuestion } from '../../services/admin';
 import { getQuestions } from '../../services/questions';
@@ -1258,7 +1247,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Spinner from '../../components/ui/Spinner';
 import Badge from '../../components/ui/Badge';
-import { Plus, Edit, Trash2, Search, X, Upload, Image as ImageIcon, FolderOpen, Superscript, Subscript, Type, Bold, Italic, ArrowLeft } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, X, Upload, Image as ImageIcon, FolderOpen, Superscript, Subscript, Type, Bold, Italic, ArrowLeft, Copy, Check } from 'lucide-react';
 import { formatRelativeTime } from '../../utils/formatters';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
@@ -1278,6 +1267,80 @@ export const formatTextWithHTML = (text) => {
       .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
       .replace(/<sub>(.*?)<\/sub>/g, '<sub>$1</sub>')
   ).join('<br>');
+};
+
+// Timestamp Display Component
+const TimestampDisplay = ({ timestamp, label = "Created" }) => {
+  const [copied, setCopied] = useState(false);
+
+  // const formatTimestamp = (date) => {
+  //   return new Date(date).toLocaleString('en-US', {
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     second: '2-digit',
+  //     timeZoneName: 'short'
+  //   });
+  // };
+
+
+  const formatTimestamp = (date) => {
+  return new Date(date).toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    hour12: false, // This will show 13, 14, etc. for PM
+    minute: '2-digit',
+    second: '2-digit',
+    timeZoneName: 'short'
+  });
+};
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(formatTimestamp(timestamp));
+      setCopied(true);
+      toast.success('Timestamp copied to clipboard!');
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy timestamp:', err);
+      toast.error('Failed to copy timestamp');
+    }
+  };
+
+  if (!timestamp) return null;
+
+  return (
+    <div className="flex items-center gap-2 mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+      <div className="flex-1">
+        <span className="text-xs font-medium text-gray-600">{label}:</span>
+        <div className="text-xs text-gray-800 font-mono">
+          {formatTimestamp(timestamp)}
+        </div>
+        <div className="text-xs text-gray-500 mt-1">
+          {formatRelativeTime(timestamp)}
+        </div>
+      </div>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={handleCopy}
+        className="flex items-center gap-1 min-w-0 px-2 py-1 text-xs"
+        title="Copy timestamp"
+      >
+        {copied ? (
+          <Check className="w-3 h-3 text-green-600" />
+        ) : (
+          <Copy className="w-3 h-3" />
+        )}
+        {copied ? 'Copied!' : 'Copy'}
+      </Button>
+    </div>
+  );
 };
 
 // Rich Text Editor Component
@@ -1858,9 +1921,9 @@ const QuestionManagement = () => {
 
     setSelectedFiles(prev => {
       const newSelected = { ...prev };
-      delete newSelected[fileId];
-      return newSelected;
-    });
+        delete newSelected[fileId];
+        return newSelected;
+      });
 
     if (newMode) {
       setNewData(prev => updateImageField(prev, field, '', index, stepIndex));
@@ -2169,9 +2232,9 @@ const QuestionManagement = () => {
                     <span className="text-xs text-blue-500 font-medium">Contains images</span>
                   </div>
                 )}
-                <p className="text-xs text-gray-500 mt-2">
-                  Created {formatRelativeTime(q.createdAt)}
-                </p>
+                
+                {/* Timestamp Display in List View */}
+                <TimestampDisplay timestamp={q.createdAt} />
               </div>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={() => handleEdit(q)}>
@@ -2462,6 +2525,16 @@ const QuestionManagement = () => {
 
               
             </div>
+
+            {/* Timestamp Display in Edit Form */}
+            {!newMode && editingQuestion && (
+              <div className="pt-4 border-t">
+                <TimestampDisplay 
+                  timestamp={editingQuestion.createdAt} 
+                  label="Question Created"
+                />
+              </div>
+            )}
 
             {/* Form Actions */}
             <div className="flex justify-end gap-3 pt-6 border-t">
