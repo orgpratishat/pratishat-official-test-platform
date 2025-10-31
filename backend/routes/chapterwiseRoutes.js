@@ -61,48 +61,6 @@ router.get('/:subject/:chapter/topics', protect, async (req, res, next) => {
 // @desc    Get questions by topic
 // @route   GET /api/chapterwise/:subject/:chapter/:topic/questions
 
-// router.get('/:subject/:chapter/:topic/questions', protect, async (req, res, next) => {
-//   try {
-//     const { subject, chapter, topic } = req.params;
-
-//     const questions = await Question.find({
-//       subject,
-//       chapter,
-//       topic
-//     }).select('-hint -approach -solution');
-
-//     // Get user's previous attempts for these questions
-//     const questionIds = questions.map(q => q._id);
-//     const previousAttempts = await Attempt.find({
-//       user: req.user.id,
-//       attemptType: 'CHAPTERWISE',
-//       'responses.question': { $in: questionIds }
-//     });
-
-//     // Mark which questions were answered wrong
-//     const wrongQuestionIds = new Set();
-//     previousAttempts.forEach(attempt => {
-//       attempt.responses.forEach(response => {
-//         if (!response.isCorrect) {
-//           wrongQuestionIds.add(response.question.toString());
-//         }
-//       });
-//     });
-
-//     const questionsWithStatus = questions.map(q => ({
-//       ...q.toObject(),
-//       wasWrong: wrongQuestionIds.has(q._id.toString())
-//     }));
-
-//     res.status(200).json({
-//       success: true,
-//       count: questionsWithStatus.length,
-//       questions: questionsWithStatus
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 router.get('/:subject/:chapter/:topic/questions', protect, async (req, res, next) => {
   try {

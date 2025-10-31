@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getQuestionsByTopic } from '../services/chapterwise';
@@ -21,6 +22,8 @@ const formatTextWithHTML = (text) => {
   // Process each line with HTML formatting and join with <br>
   return lines.map(line => 
     line
+      // Process division syntax: {{numerator/denominator}}
+      .replace(/\{\{([^}]+)\/([^}]+)\}\}/g, '<span class="fraction"><span class="numerator">$1</span><span class="denominator">$2</span></span>')
       .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
       .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
       .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
@@ -38,6 +41,36 @@ const TopicPractice = () => {
   const [answers, setAnswers] = useState({});
   const [lockedAnswers, setLockedAnswers] = useState({});
   const [showExplanation, setShowExplanation] = useState({});
+
+  // Add CSS for fraction styling
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .fraction {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        vertical-align: middle;
+        margin: 0 2px;
+      }
+      .numerator {
+        padding: 0 4px;
+        border-bottom: 1px solid currentColor;
+        line-height: 1;
+        font-size: 0.9em;
+      }
+      .denominator {
+        padding: 0 4px;
+        line-height: 1;
+        font-size: 0.9em;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -310,7 +343,7 @@ const TopicPractice = () => {
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    {/* Option text with HTML formatting */}
+                    {/* Option text with HTML formatting including fractions */}
                     <div 
                       className="text-gray-800 font-medium leading-relaxed whitespace-pre-wrap"
                       dangerouslySetInnerHTML={{ 
