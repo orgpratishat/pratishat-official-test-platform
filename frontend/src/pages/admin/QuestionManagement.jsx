@@ -3107,14 +3107,14 @@ const QuestionManagement = () => {
         margin: 0 2px;
       }
       .rich-text-preview .numerator {
-        padding: 0 4px;
+        padding: 0 8px;
         border-bottom: 1px solid currentColor;
-        line-height: 1;
+        line-height: 2;
         font-size: 0.9em;
       }
       .rich-text-preview .denominator {
         padding: 0 4px;
-        line-height: 1;
+        line-height: 2;
         font-size: 0.9em;
       }
     `;
