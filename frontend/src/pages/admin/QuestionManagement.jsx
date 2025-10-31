@@ -2563,6 +2563,25 @@ import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
 
 // Format text for display (use this when displaying the content)
+// export const formatTextWithHTML = (text) => {
+//   if (!text) return '';
+  
+//   // First, split by newlines and process each line
+//   const lines = text.split('\n');
+  
+//   // Process each line with HTML formatting and join with <br>
+//   return lines.map(line => 
+//     line
+//       // Process division syntax: {{numerator/denominator}}
+//       .replace(/\{\{([^}]+)\/([^}]+)\}\}/g, '<span class="fraction"><span class="numerator">$1</span><span class="denominator">$2</span></span>')
+//       .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
+//       .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
+//       .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
+//       .replace(/<sub>(.*?)<\/sub>/g, '<sub>$1</sub>')
+//   ).join('<br>');
+// };
+
+// Format text for display (use this when displaying the content)
 export const formatTextWithHTML = (text) => {
   if (!text) return '';
   
@@ -2572,8 +2591,8 @@ export const formatTextWithHTML = (text) => {
   // Process each line with HTML formatting and join with <br>
   return lines.map(line => 
     line
-      // Process division syntax: {{numerator/denominator}}
-      .replace(/\{\{([^}]+)\/([^}]+)\}\}/g, '<span class="fraction"><span class="numerator">$1</span><span class="denominator">$2</span></span>')
+      // Process division syntax: {{numerator|denominator}} (using | instead of /)
+      .replace(/\{\{([^}]+)\|([^}]+)\}\}/g, '<span class="fraction"><span class="numerator">$1</span><span class="denominator">$2</span></span>')
       .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
       .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
       .replace(/<sup>(.*?)<\/sup>/g, '<sup>$1</sup>')
@@ -2710,48 +2729,93 @@ const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
     }, 0);
   };
 
-  const insertDivision = () => {
-    if (!textareaRef.current) return;
+  // const insertDivision = () => {
+  //   if (!textareaRef.current) return;
 
-    const textarea = textareaRef.current;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = value.substring(start, end);
+  //   const textarea = textareaRef.current;
+  //   const start = textarea.selectionStart;
+  //   const end = textarea.selectionEnd;
+  //   const selectedText = value.substring(start, end);
     
-    let newText;
-    if (selectedText) {
-      // If text is selected, wrap it as numerator and add denominator placeholder
-      newText = `{{${selectedText}/denominator}}`;
-    } else {
-      // If no text is selected, insert a complete division template
-      newText = '{{numerator/denominator}}';
-    }
+  //   let newText;
+  //   if (selectedText) {
+  //     // If text is selected, wrap it as numerator and add denominator placeholder
+  //     newText = `{{${selectedText}/denominator}}`;
+  //   } else {
+  //     // If no text is selected, insert a complete division template
+  //     newText = '{{numerator/denominator}}';
+  //   }
     
-    const newValue = value.substring(0, start) + newText + value.substring(end);
-    onChange(newValue);
+  //   const newValue = value.substring(0, start) + newText + value.substring(end);
+  //   onChange(newValue);
     
-    // Restore cursor position after state update
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-        if (selectedText) {
-          // Position cursor at "denominator" placeholder
-          textareaRef.current.setSelectionRange(
-            start + newText.indexOf('denominator'), 
-            start + newText.indexOf('denominator') + 'denominator'.length
-          );
-        } else {
-          // Position cursor at "numerator" placeholder
-          textareaRef.current.setSelectionRange(
-            start + newText.indexOf('numerator'), 
-            start + newText.indexOf('numerator') + 'numerator'.length
-          );
-        }
-      }
-    }, 0);
-  };
+  //   // Restore cursor position after state update
+  //   setTimeout(() => {
+  //     if (textareaRef.current) {
+  //       textareaRef.current.focus();
+  //       if (selectedText) {
+  //         // Position cursor at "denominator" placeholder
+  //         textareaRef.current.setSelectionRange(
+  //           start + newText.indexOf('denominator'), 
+  //           start + newText.indexOf('denominator') + 'denominator'.length
+  //         );
+  //       } else {
+  //         // Position cursor at "numerator" placeholder
+  //         textareaRef.current.setSelectionRange(
+  //           start + newText.indexOf('numerator'), 
+  //           start + newText.indexOf('numerator') + 'numerator'.length
+  //         );
+  //       }
+  //     }
+  //   }, 0);
+  // };
 
   // Handle click outside to close Greek menu
+ 
+ 
+
+  const insertDivision = () => {
+  if (!textareaRef.current) return;
+
+  const textarea = textareaRef.current;
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = value.substring(start, end);
+  
+  let newText;
+  if (selectedText) {
+    // If text is selected, wrap it as numerator and add denominator placeholder
+    newText = `{{${selectedText}|denominator}}`;
+  } else {
+    // If no text is selected, insert a complete division template
+    newText = '{{numerator|denominator}}';
+  }
+  
+  const newValue = value.substring(0, start) + newText + value.substring(end);
+  onChange(newValue);
+  
+  // Restore cursor position after state update
+  setTimeout(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      if (selectedText) {
+        // Position cursor at "denominator" placeholder
+        textareaRef.current.setSelectionRange(
+          start + newText.indexOf('denominator'), 
+          start + newText.indexOf('denominator') + 'denominator'.length
+        );
+      } else {
+        // Position cursor at "numerator" placeholder
+        textareaRef.current.setSelectionRange(
+          start + newText.indexOf('numerator'), 
+          start + newText.indexOf('numerator') + 'numerator'.length
+        );
+      }
+    }
+  }, 0);
+};
+
+ 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showGreekMenu && !event.target.closest('.greek-menu-container')) {
@@ -2856,9 +2920,16 @@ const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
         </div>
 
         {/* Format Help */}
-        <div className="ml-2 text-xs text-gray-500">
+        {/* <div className="ml-2 text-xs text-gray-500">
           Use {'<b>text</b>'} for bold, {'<i>text</i>'} for italic, {'<sup>text</sup>'} for superscript, {'<sub>text</sub>'} for subscript, {'{{numerator/denominator}}'} for fractions
-        </div>
+        </div> */}
+
+
+        {/* Format Help */}
+<div className="ml-2 text-xs text-gray-500">
+  Use {'<b>text</b>'} for bold, {'<i>text</i>'} for italic, {'<sup>text</sup>'} for superscript, {'<sub>text</sub>'} for subscript, {'{{numerator|denominator}}'} for fractions
+</div>
+
       </div>
 
       {/* Textarea */}
