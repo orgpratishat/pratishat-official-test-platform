@@ -1547,7 +1547,7 @@ const CreatorInfo = ({ createdBy, createdAt }) => {
 
   return (
     <div className="flex items-center gap-2 mt-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
-      <User className="w-4 h-4 text-blue-600" />
+      {/* <User className="w-4 h-4 text-blue-600" /> */}
       <div className="flex-1">
         <span className="text-xs font-medium text-blue-600">Created by:</span>
         <div className="text-xs text-blue-800">
