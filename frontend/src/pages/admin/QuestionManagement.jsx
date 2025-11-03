@@ -1043,7 +1043,7 @@ const QuestionManagement = () => {
             size="sm"
             onClick={() => handleImageUpload(field, index, stepIndex)}
             disabled={uploading || !hasSelectedFile}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-red-400"
           >
             <Upload className="w-4 h-4" />
             {uploading ? 'Uploading...' : 'Upload Image'}
@@ -1557,9 +1557,7 @@ const QuestionManagement = () => {
             <div>
               <div className="flex justify-between items-center mb-3">
                 <label className="block text-sm font-medium text-gray-700">Solution Steps</label>
-                <Button className="bg-red-400" type="button" size="sm" onClick={addSolutionStep}>
-                  <Plus className="w-4 h-4 mr-1 " /> Add Step
-                </Button>
+               
               </div>
               {(newMode ? newData : formData).solution.map((step, index) => (
                 <div key={index} className="mb-4 p-4 border border-gray-200 rounded-lg bg-white">
@@ -1591,6 +1589,10 @@ const QuestionManagement = () => {
                   />
                 </div>
               ))}
+
+               <Button className="bg-red-400" type="button" size="sm" onClick={addSolutionStep}>
+                  <Plus className="w-4 h-4 mr-1 " /> Add Step
+                </Button>
             </div>
 
             {/* Creator Information in Edit Form */}
@@ -1621,7 +1623,8 @@ const QuestionManagement = () => {
               <Button 
                 type="submit" 
                 disabled={loading || uploading}
-                className="min-w-24 bg-red-400"
+                className="min-w-24 bg-red-400
+                "
               >
                 {loading ? 'Saving...' : uploading ? 'Uploading...' : newMode ? 'Create Question' : 'Update Question'}
               </Button>
