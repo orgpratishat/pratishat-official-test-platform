@@ -147,13 +147,13 @@ const Memories = () => {
           <Card key={memory._id} className="p-6 hover:shadow-lg transition-shadow duration-200">
             <div className="flex items-start justify-between mb-4">
               <div className="flex gap-3 flex-wrap">
-                <Badge variant="primary" text={memory.question.subject} />
+                <Badge variant="primary" text={memory.question?.subject} />
                 <Badge 
                   variant={
-                    memory.question.difficulty === 'Easy' ? 'success' : 
-                    memory.question.difficulty === 'Medium' ? 'warning' : 'danger'
+                    memory.question?.difficulty === 'Easy' ? 'success' : 
+                    memory.question?.difficulty === 'Medium' ? 'warning' : 'danger'
                   } 
-                  text={memory.question.difficulty} 
+                  text={memory.question?.difficulty} 
                 />
                 <Badge variant="outline" text={formatRelativeTime(memory.createdAt)} />
                 {memory.attemptType && (
@@ -163,7 +163,7 @@ const Memories = () => {
               <Button
                 variant="danger"
                 size="sm"
-                onClick={() => confirmDelete(memory._id, memory.question.questionText)}
+                onClick={() => confirmDelete(memory._id, memory.question?.questionText)}
                 disabled={deletingId === memory._id}
                 className="flex items-center gap-2 bg-red-400 rounded-lg"
               >
@@ -177,11 +177,11 @@ const Memories = () => {
             </div>
 
             <h3 className="text-sm text-gray-600 mb-2">
-              {memory.question.chapter} → {memory.question.topic}
+              {memory.question?.chapter} → {memory.question?.topic}
             </h3>
             
             <p className="text-lg text-gray-900 mb-4 leading-relaxed">
-              {memory.question.questionText}
+              {memory.question?.questionText}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -189,7 +189,7 @@ const Memories = () => {
                 <h4 className="font-medium text-red-800 mb-2">Your Answer:</h4>
                 <p className="text-red-700">
                   {memory.userAnswer !== null && memory.userAnswer !== undefined 
-                    ? memory.question.options[memory.userAnswer]?.optionText 
+                    ? memory.question?.options[memory.userAnswer]?.optionText 
                     : 'Not answered'
                   }
                 </p>
@@ -197,22 +197,22 @@ const Memories = () => {
               <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
                 <h4 className="font-medium text-green-800 mb-2">Correct Answer:</h4>
                 <p className="text-green-700">
-                  {memory.question.options[memory.correctAnswer]?.optionText}
+                  {memory.question?.options[memory.correctAnswer]?.optionText}
                 </p>
               </div>
             </div>
 
-            {memory.question.hint?.text && (
+            {memory.question?.hint?.text && (
               <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="font-medium text-blue-800 mb-2">Hint:</h4>
-                <p className="text-blue-700">{memory.question.hint.text}</p>
+                <p className="text-blue-700">{memory.question?.hint.text}</p>
               </div>
             )}
 
-            {memory.question.approach?.text && (
+            {memory.question?.approach?.text && (
               <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
                 <h4 className="font-medium text-purple-800 mb-2">Approach:</h4>
-                <p className="text-purple-700">{memory.question.approach.text}</p>
+                <p className="text-purple-700">{memory.question?.approach.text}</p>
               </div>
             )}
           </Card>

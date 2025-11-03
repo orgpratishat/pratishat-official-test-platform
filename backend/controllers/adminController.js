@@ -30,11 +30,133 @@ const logChange = async (adminId, action, collection, documentId, changes = null
 
 // @desc    Create question
 // @route   POST /api/admin/questions
-exports.createQuestion = async (req, res, next) => {
+// exports.createQuestion = async (req, res, next) => {
+//   try {
+//     // Ensure options have correct structure
+//     const questionData = {
+//       ...req.body,
+//       options: req.body.options.map(opt => ({
+//         optionText: opt.optionText,
+//         optionImage: opt.optionImage || '',
+//         isCorrect: opt.isCorrect || false
+//       })),
+//       hint: {
+//         text: req.body.hint?.text || '',
+//         image: req.body.hint?.image || ''
+//       },
+//       approach: {
+//         text: req.body.approach?.text || '',
+//         image: req.body.approach?.image || ''
+//       },
+//       solution: req.body.solution?.map((step, index) => ({
+//         stepNumber: index + 1,
+//         stepText: step.stepText || '',
+//         stepImage: step.stepImage || ''
+//       })) || []
+//     };
+
+//     const question = await Question.create(questionData);
+
+//     await logChange(req.user.id, 'CREATE', 'Question', question._id);
+
+//     res.status(201).json({
+//       success: true,
+//       message: 'Question created successfully',
+//       question
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+// // @desc    Update question
+// // @route   PUT /api/admin/questions/:id
+// exports.updateQuestion = async (req, res, next) => {
+//   try {
+//     const oldQuestion = await Question.findById(req.params.id);
+
+//     if (!oldQuestion) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Question not found'
+//       });
+//     }
+//     console.log("reached here")
+//     // Ensure options have correct structure
+//     const updateData = {
+//       ...req.body,
+//       options: req.body.options.map(opt => ({
+//         optionText: opt.optionText,
+//         optionImage: opt.optionImage || '',
+//         isCorrect: opt.isCorrect || false
+//       })),
+//       hint: {
+//         text: req.body.hint?.text || '',
+//         image: req.body.hint?.image || ''
+//       },
+//       approach: {
+//         text: req.body.approach?.text || '',
+//         image: req.body.approach?.image || ''
+//       },
+//       solution: req.body.solution?.map((step, index) => ({
+//         stepNumber: index + 1,
+//         stepText: step.stepText || '',
+//         stepImage: step.stepImage || ''
+//       })) || []
+//     };
+
+//     const question = await Question.findByIdAndUpdate(
+//       req.params.id,
+//       updateData,
+//       { new: true, runValidators: true }
+//     );
+
+//     await logChange(req.user.id, 'UPDATE', 'Question', question._id, {
+//       old: oldQuestion,
+//       new: question
+//     });
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Question updated successfully',
+//       question
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+
+    exports.createQuestion = async (req, res, next) => {
   try {
+    const { showExamYear, year, exam, ...otherData } = req.body;
+    
+    // Validate exam and year if showExamYear is true
+    if (showExamYear) {
+      if (!year) {
+        return res.status(400).json({
+          success: false,
+          message: 'Year is required when exam/year fields are shown'
+        });
+      }
+      if (!exam) {
+        return res.status(400).json({
+          success: false,
+          message: 'Exam is required when exam/year fields are shown'
+        });
+      }
+    }
+
     // Ensure options have correct structure
     const questionData = {
-      ...req.body,
+      ...otherData,
+      showExamYear: showExamYear || false,
+      year: showExamYear ? year : undefined,
+      exam: showExamYear ? exam : undefined,
+      createdBy: {
+        userId: req.user._id,
+        username: req.user.username
+      },
       options: req.body.options.map(opt => ({
         optionText: opt.optionText,
         optionImage: opt.optionImage || '',
@@ -81,10 +203,31 @@ exports.updateQuestion = async (req, res, next) => {
         message: 'Question not found'
       });
     }
-    console.log("reached here")
+
+    const { showExamYear, year, exam, ...otherData } = req.body;
+    
+    // Validate exam and year if showExamYear is true
+    if (showExamYear) {
+      if (!year) {
+        return res.status(400).json({
+          success: false,
+          message: 'Year is required when exam/year fields are shown'
+        });
+      }
+      if (!exam) {
+        return res.status(400).json({
+          success: false,
+          message: 'Exam is required when exam/year fields are shown'
+        });
+      }
+    }
+
     // Ensure options have correct structure
     const updateData = {
-      ...req.body,
+      ...otherData,
+      showExamYear: showExamYear || false,
+      year: showExamYear ? year : undefined,
+      exam: showExamYear ? exam : undefined,
       options: req.body.options.map(opt => ({
         optionText: opt.optionText,
         optionImage: opt.optionImage || '',
@@ -125,6 +268,7 @@ exports.updateQuestion = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // @desc    Delete question
 // @route   DELETE /api/admin/questions/:id
