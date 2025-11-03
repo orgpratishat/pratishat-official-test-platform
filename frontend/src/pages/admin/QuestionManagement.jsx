@@ -2998,7 +2998,7 @@ const QuestionManagement = () => {
               <div className="flex justify-between items-center mb-3">
                 <label className="block text-sm font-medium text-gray-700">Solution Steps</label>
                 <Button type="button" size="sm" onClick={addSolutionStep}>
-                  <Plus className="w-4 h-4 mr-1" /> Add Step
+                  <Plus className="w-4 h-4 mr-1 bg-red-400" /> Add Step
                 </Button>
               </div>
               {(newMode ? newData : formData).solution.map((step, index) => (
