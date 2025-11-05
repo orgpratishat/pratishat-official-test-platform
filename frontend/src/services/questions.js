@@ -4,6 +4,10 @@ export const getQuestions = async params =>
   await api.get('/questions', { params });
 
 
+export const getAllQuestions = async (params = {}) => {
+  return await api.get('/admin/questions', { params });
+};
+
 
 export const getQuestionById = async id =>
   await api.get(`/questions/${id}`);

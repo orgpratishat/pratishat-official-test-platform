@@ -84,3 +84,4 @@ export const deleteUser = async (id) => {
   console.log("reached here")
   return await api.delete(`/admin/users/${id}`);
 };
+

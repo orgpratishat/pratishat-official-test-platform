@@ -40,30 +40,7 @@ const Tests = () => {
         </p>
       </div>
 
-      {/* Filters */}
-      {/* <div className="mb-6 flex gap-3">
-        <Button
-          variant={filter === 'all' ? 'primary' : 'outline'}
-          size="sm"
-          onClick={() => setFilter('all')}
-        >
-          All Tests
-        </Button>
-        <Button
-          variant={filter === 'NEET_MOCK' ? 'primary' : 'outline'}
-          size="sm"
-          onClick={() => setFilter('NEET_MOCK')}
-        >
-          NEET Mock
-        </Button>
-        <Button
-          variant={filter === 'DPP_TEST' ? 'primary' : 'outline'}
-          size="sm"
-          onClick={() => setFilter('DPP_TEST')}
-        >
-          DPP Tests
-        </Button>
-      </div> */}
+   
 
         <div className="mb-6 flex gap-3">
   <Button

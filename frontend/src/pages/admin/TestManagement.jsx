@@ -1,5 +1,6 @@
 
 
+
 // import React, { useEffect, useMemo, useState } from 'react';
 // import { createTest, updateTest, deleteTest } from '../../services/admin';
 // import { getAllTests } from '../../services/tests';
@@ -9,12 +10,12 @@
 // import Input from '../../components/ui/Input';
 // import Spinner from '../../components/ui/Spinner';
 // import Badge from '../../components/ui/Badge';
-// import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type, ArrowLeft } from 'lucide-react';
+// import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type, ArrowLeft, Filter, CheckSquare, Square, User } from 'lucide-react';
 // import { formatDate } from '../../utils/formatters';
 // import toast from 'react-hot-toast';
 // import Fuse from 'fuse.js';
 
-// // Rich Text Editor Component (same as before)
+// // Rich Text Editor Component
 // const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
 //   const [showGreekMenu, setShowGreekMenu] = useState(false);
 
@@ -183,6 +184,137 @@
 //   );
 // };
 
+// // Date Filter Component
+// const DateFilter = ({ 
+//   startDate, 
+//   endDate, 
+//   onStartDateChange, 
+//   onEndDateChange, 
+//   onApplyFilter, 
+//   onClearFilter,
+//   isFilterActive 
+// }) => {
+//   return (
+//     <Card className="p-4 mb-4 bg-gray-50 border border-gray-200">
+//       <div className="flex items-center gap-2 mb-3">
+//         <Filter className="w-4 h-4 text-gray-600" />
+//         <h3 className="font-medium text-gray-800">Filter Questions by Creation Date</h3>
+//         {isFilterActive && (
+//           <Badge text="Filter Active" color="blue" />
+//         )}
+//       </div>
+      
+//       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+//         <div>
+//           <label className="block text-sm font-medium mb-2 text-gray-700">
+//             Start Date & Time
+//           </label>
+//           <Input
+//             type="datetime-local"
+//             value={startDate}
+//             onChange={(e) => onStartDateChange(e.target.value)}
+//             className="w-full"
+//           />
+//         </div>
+        
+//         <div>
+//           <label className="block text-sm font-medium mb-2 text-gray-700">
+//             End Date & Time
+//           </label>
+//           <Input
+//             type="datetime-local"
+//             value={endDate}
+//             onChange={(e) => onEndDateChange(e.target.value)}
+//             className="w-full"
+//           />
+//         </div>
+        
+//         <div className="flex gap-2">
+//           <Button
+//             type="button"
+//             onClick={onApplyFilter}
+//             className="flex-1 bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
+//             size="sm"
+//           >
+//             Apply Filter
+//           </Button>
+//           <Button
+//             type="button"
+//             onClick={onClearFilter}
+//             variant="outline"
+//             className="flex-1 cursor-pointer"
+//             size="sm"
+//           >
+//             Clear
+//           </Button>
+//         </div>
+//       </div>
+      
+//       {isFilterActive && (
+//         <div className="mt-3 text-xs text-gray-600">
+//           <p>Showing questions created between {new Date(startDate).toLocaleString()} and {new Date(endDate).toLocaleString()}</p>
+//         </div>
+//       )}
+//     </Card>
+//   );
+// };
+
+// // Question Statistics Component
+// const QuestionStatistics = ({ questions, selectedQuestions }) => {
+//   const stats = useMemo(() => {
+//     const total = questions.length;
+//     const selected = selectedQuestions.length;
+    
+//     const bySubject = questions.reduce((acc, question) => {
+//       const subject = question.subject || 'Unknown';
+//       acc[subject] = (acc[subject] || 0) + 1;
+//       return acc;
+//     }, {});
+    
+//     const byCreator = questions.reduce((acc, question) => {
+//       const creator = question.createdBy?.username || 'Unknown';
+//       acc[creator] = (acc[creator] || 0) + 1;
+//       return acc;
+//     }, {});
+
+//     return { total, selected, bySubject, byCreator };
+//   }, [questions, selectedQuestions]);
+
+//   if (questions.length === 0) return null;
+
+//   return (
+//     <Card className="p-4 mb-4 bg-green-50 border border-green-200">
+//       <div className="grid grid-cols-2 md:grid-cols-6 gap-4 text-sm">
+//         <div className="text-center">
+//           <div className="text-2xl font-bold text-green-600">{stats.total}</div>
+//           <div className="text-gray-600">Total Questions</div>
+//         </div>
+        
+//         <div className="text-center">
+//           <div className="text-2xl font-bold text-blue-600">{stats.selected}</div>
+//           <div className="text-gray-600">Selected</div>
+//         </div>
+        
+//         {Object.entries(stats.bySubject).slice(0, 2).map(([subject, count]) => (
+//           <div key={subject} className="text-center">
+//             <div className="text-xl font-bold text-purple-600">{count}</div>
+//             <div className="text-gray-600">{subject}</div>
+//           </div>
+//         ))}
+        
+//         {Object.entries(stats.byCreator).slice(0, 2).map(([creator, count]) => (
+//           <div key={creator} className="text-center">
+//             <div className="text-xl font-bold text-orange-600">{count}</div>
+//             <div className="text-gray-600 text-xs truncate" title={creator}>
+//               {creator}
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </Card>
+//   );
+// };
+
 // const TestManagement = () => {
 //   const [tests, setTests] = useState([]);
 //   const [questions, setQuestions] = useState([]);
@@ -191,6 +323,11 @@
 //   const [editingTest, setEditingTest] = useState(null);
 //   const [searchTerm, setSearchTerm] = useState('');
 //   const [showAddQuestion, setShowAddQuestion] = useState(false);
+
+//   // Date filter states
+//   const [startDate, setStartDate] = useState('');
+//   const [endDate, setEndDate] = useState('');
+//   const [isDateFilterActive, setIsDateFilterActive] = useState(false);
 
 //   const [formData, setFormData] = useState({
 //     name: '',
@@ -243,27 +380,49 @@
 //   const loadQuestions = async () => {
 //     try {
 //       const response = await getQuestions({ limit: 5000 });
+//       console.log('Loaded questions:', response);
 //       setQuestions(response.questions || []);
 //     } catch (error) {
 //       console.error('Failed to load questions');
 //     }
 //   };
 
-//   // Fuzzy search using Fuse.js
+//   // Apply date filter to questions
+//   const filteredByDate = useMemo(() => {
+//     if (!isDateFilterActive || !startDate || !endDate) {
+//       return questions;
+//     }
+
+//     const start = new Date(startDate);
+//     const end = new Date(endDate);
+
+//     return questions.filter(question => {
+//       const questionDate = new Date(question.createdAt);
+//       return questionDate >= start && questionDate <= end;
+//     });
+//   }, [questions, startDate, endDate, isDateFilterActive]);
+
+//   // Fuzzy search using Fuse.js on date-filtered questions - INCLUDING CREATOR and TOPICS ARRAY
 //   const fuse = useMemo(() => {
-//     return new Fuse(questions, {
-//       keys: ['questionText', 'subject', 'chapter', 'topic'],
+//     return new Fuse(filteredByDate, {
+//       keys: [
+//         'questionText', 
+//         'subject', 
+//         'chapter', 
+//         'topics', // This will search within the topics array
+//         'createdBy.username' // Add creator username to searchable fields
+//       ],
 //       threshold: 0.3,
 //       ignoreLocation: true,
 //       minMatchCharLength: 2,
 //     });
-//   }, [questions]);
+//   }, [filteredByDate]);
 
 //   const filteredQuestions = useMemo(() => {
-//     if (!searchTerm.trim()) return questions;
+//     if (!searchTerm.trim()) return filteredByDate;
 //     const results = fuse.search(searchTerm);
 //     return results.map((result) => result.item);
-//   }, [searchTerm, fuse, questions]);
+//   }, [searchTerm, fuse, filteredByDate]);
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
@@ -357,6 +516,10 @@
 //     setSearchTerm('');
 //     setShowAddQuestion(false);
 //     resetNewQuestion();
+//     // Clear date filters
+//     setStartDate('');
+//     setEndDate('');
+//     setIsDateFilterActive(false);
 //   };
 
 //   const resetNewQuestion = () => {
@@ -382,6 +545,26 @@
 //         ? prev.questions.filter((id) => id !== questionId)
 //         : [...prev.questions, questionId],
 //     }));
+//   };
+
+//   // Select all questions from current filtered list
+//   const selectAllFilteredQuestions = () => {
+//     const filteredQuestionIds = filteredQuestions.map(q => q._id);
+//     setFormData((prev) => ({
+//       ...prev,
+//       questions: [...new Set([...prev.questions, ...filteredQuestionIds])],
+//     }));
+//     toast.success(`Added ${filteredQuestionIds.length} questions to test`);
+//   };
+
+//   // Deselect all questions from current filtered list
+//   const deselectAllFilteredQuestions = () => {
+//     const filteredQuestionIds = filteredQuestions.map(q => q._id);
+//     setFormData((prev) => ({
+//       ...prev,
+//       questions: prev.questions.filter(id => !filteredQuestionIds.includes(id)),
+//     }));
+//     toast.success(`Removed ${filteredQuestionIds.length} questions from test`);
 //   };
 
 //   const selectQuestionsByFilter = (subject) => {
@@ -417,6 +600,8 @@
 //     try {
 //       const payload = {
 //         ...newQuestion,
+//         // Convert topics to array format
+//         topics: newQuestion.topic.split(',').map(t => t.trim()).filter(t => t),
 //         options: newQuestion.options.filter((opt) => opt.optionText.trim()),
 //         hint: { text: '' },
 //         approach: { text: '' },
@@ -472,6 +657,50 @@
 //     setShowForm(false);
 //     setEditingTest(null);
 //     resetForm();
+//   };
+
+//   // Date filter handlers
+//   const handleApplyDateFilter = () => {
+//     if (!startDate || !endDate) {
+//       toast.error('Please select both start and end dates');
+//       return;
+//     }
+
+//     if (new Date(startDate) > new Date(endDate)) {
+//       toast.error('Start date cannot be after end date');
+//       return;
+//     }
+
+//     setIsDateFilterActive(true);
+//     toast.success('Date filter applied');
+//   };
+
+//   const handleClearDateFilter = () => {
+//     setStartDate('');
+//     setEndDate('');
+//     setIsDateFilterActive(false);
+//     toast.success('Date filter cleared');
+//   };
+
+//   // Check if all filtered questions are selected
+//   const allFilteredSelected = useMemo(() => {
+//     if (filteredQuestions.length === 0) return false;
+//     return filteredQuestions.every(q => formData.questions.includes(q._id));
+//   }, [filteredQuestions, formData.questions]);
+
+//   // Check if some filtered questions are selected
+//   const someFilteredSelected = useMemo(() => {
+//     if (filteredQuestions.length === 0) return false;
+//     return filteredQuestions.some(q => formData.questions.includes(q._id)) && !allFilteredSelected;
+//   }, [filteredQuestions, formData.questions, allFilteredSelected]);
+
+//   // Toggle select all for filtered questions
+//   const toggleSelectAllFiltered = () => {
+//     if (allFilteredSelected) {
+//       deselectAllFilteredQuestions();
+//     } else {
+//       selectAllFilteredQuestions();
+//     }
 //   };
 
 //   // Show test list view
@@ -709,7 +938,7 @@
 //               Select Questions ({formData.questions.length} selected) *
 //             </h3>
 //             <div className="flex gap-2">
-//               <Button
+//               {/* <Button
 //                 type="button"
 //                 variant="outline"
 //                 size="sm"
@@ -718,7 +947,7 @@
 //               >
 //                 <Plus className="w-4 h-4 mr-1" />
 //                 Add New Question
-//               </Button>
+//               </Button> */}
 //               <Button
 //                 type="button"
 //                 variant="outline"
@@ -747,6 +976,64 @@
 //                 + Biology
 //               </Button>
 //             </div>
+//           </div>
+
+//           {/* Date Filter Component */}
+//           <DateFilter
+//             startDate={startDate}
+//             endDate={endDate}
+//             onStartDateChange={setStartDate}
+//             onEndDateChange={setEndDate}
+//             onApplyFilter={handleApplyDateFilter}
+//             onClearFilter={handleClearDateFilter}
+//             isFilterActive={isDateFilterActive}
+//           />
+
+//           {/* Question Statistics */}
+//           <QuestionStatistics 
+//             questions={filteredQuestions}
+//             selectedQuestions={formData.questions}
+//           />
+
+//           {/* Search and Select All Bar */}
+//           <div className="flex gap-3 mb-3">
+//             <div className="relative flex-1">
+//               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+//               <Input
+//                 placeholder="Search questions by keyword, subject, chapter, topic, or creator..."
+//                 value={searchTerm}
+//                 onChange={(e) => setSearchTerm(e.target.value)}
+//                 className="pl-10"
+//               />
+//               {searchTerm && (
+//                 <button
+//                   type="button"
+//                   onClick={() => setSearchTerm('')}
+//                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+//                 >
+//                   <X className="w-4 h-4" />
+//                 </button>
+//               )}
+//             </div>
+            
+//             {filteredQuestions.length > 0 && (
+//               <Button
+//                 type="button"
+//                 variant="outline"
+//                 onClick={toggleSelectAllFiltered}
+//                 className="flex items-center gap-2 whitespace-nowrap cursor-pointer"
+//                 size="sm"
+//               >
+//                 {allFilteredSelected ? (
+//                   <CheckSquare className="w-4 h-4" />
+//                 ) : someFilteredSelected ? (
+//                   <Square className="w-4 h-4" />
+//                 ) : (
+//                   <Square className="w-4 h-4" />
+//                 )}
+//                 {allFilteredSelected ? 'Deselect All' : 'Select All'}
+//               </Button>
+//             )}
 //           </div>
 
 //           {/* Add New Question Form */}
@@ -791,13 +1078,13 @@
 //                     />
 //                   </div>
 //                   <div>
-//                     <label className="block text-xs font-medium mb-1">Topic *</label>
+//                     <label className="block text-xs font-medium mb-1">Topics *</label>
 //                     <Input
 //                       value={newQuestion.topic}
 //                       onChange={(e) =>
 //                         setNewQuestion({ ...newQuestion, topic: e.target.value })
 //                       }
-//                       placeholder="Topic name"
+//                       placeholder="Topic1, Topic2, Topic3"
 //                       className="text-sm"
 //                     />
 //                   </div>
@@ -864,31 +1151,11 @@
 //             </Card>
 //           )}
 
-//           {/* Search Bar */}
-//           <div className="relative mb-3">
-//             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-//             <Input
-//               placeholder="Search questions by keyword, subject, chapter, topic..."
-//               value={searchTerm}
-//               onChange={(e) => setSearchTerm(e.target.value)}
-//               className="pl-10"
-//             />
-//             {searchTerm && (
-//               <button
-//                 type="button"
-//                 onClick={() => setSearchTerm('')}
-//                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
-//               >
-//                 <X className="w-4 h-4" />
-//               </button>
-//             )}
-//           </div>
-
 //           {/* Questions List */}
 //           <div className="max-h-96 overflow-y-auto border rounded p-3 space-y-2">
 //             {filteredQuestions.length === 0 ? (
 //               <p className="text-center text-gray-500 py-4 text-sm">
-//                 {searchTerm ? 'No questions match your search' : 'No questions available'}
+//                 {searchTerm || isDateFilterActive ? 'No questions match your search/filter criteria' : 'No questions available'}
 //               </p>
 //             ) : (
 //               filteredQuestions.map((q) => (
@@ -905,10 +1172,25 @@
 //                       html={q.questionText} 
 //                       className="text-sm font-medium"
 //                     />
-//                     <div className="flex gap-2 mt-1">
+//                     <div className="flex flex-wrap gap-2 mt-1">
 //                       <Badge text={q.subject} />
 //                       <Badge text={q.difficulty} />
-//                       <Badge text={`${q.chapter} → ${q.topic}`} />
+//                       {/* Handle topics as array */}
+//                       <Badge 
+//                         text={`${q.chapter} → ${Array.isArray(q.topics) ? q.topics.join(', ') : q.topics || 'No topics'}`} 
+//                       />
+//                       <Badge 
+//                         text={new Date(q.createdAt).toLocaleDateString('en-GB')} 
+//                         color="gray"
+//                       />
+//                       {/* Display creator information */}
+//                       {q.createdBy && (
+//                         <Badge 
+//                           text={`By: ${q.createdBy.username}`} 
+//                           color="orange"
+//                           icon={<User className="w-3 h-3 mr-1" />}
+//                         />
+//                       )}
 //                     </div>
 //                   </div>
 //                 </div>
@@ -947,6 +1229,9 @@
 
 
 
+
+
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { createTest, updateTest, deleteTest } from '../../services/admin';
 import { getAllTests } from '../../services/tests';
@@ -956,12 +1241,12 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Spinner from '../../components/ui/Spinner';
 import Badge from '../../components/ui/Badge';
-import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type, ArrowLeft, Filter, CheckSquare, Square } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, Search, X, Superscript, Subscript, Type, ArrowLeft, Filter, CheckSquare, Square, User } from 'lucide-react';
 import { formatDate } from '../../utils/formatters';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
 
-// Rich Text Editor Component (same as before)
+// Rich Text Editor Component
 const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
   const [showGreekMenu, setShowGreekMenu] = useState(false);
 
@@ -1205,6 +1490,118 @@ const DateFilter = ({
   );
 };
 
+// Creator Filter Component
+const CreatorFilter = ({ 
+  creators, 
+  selectedCreators, 
+  onCreatorChange, 
+  onApplyFilter, 
+  onClearFilter,
+  isFilterActive 
+}) => {
+  const [selectAll, setSelectAll] = useState(false);
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      onCreatorChange([]);
+    } else {
+      onCreatorChange(creators.map(creator => creator.username));
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const handleCreatorToggle = (creatorUsername) => {
+    if (selectedCreators.includes(creatorUsername)) {
+      onCreatorChange(selectedCreators.filter(username => username !== creatorUsername));
+    } else {
+      onCreatorChange([...selectedCreators, creatorUsername]);
+    }
+  };
+
+  return (
+    <Card className="p-4 mb-4 bg-purple-50 border border-purple-200">
+      <div className="flex items-center gap-2 mb-3">
+        <User className="w-4 h-4 text-purple-600" />
+        <h3 className="font-medium text-gray-800">Filter Questions by Creator</h3>
+        {isFilterActive && (
+          <Badge text="Filter Active" color="purple" />
+        )}
+      </div>
+      
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={selectAll}
+              onChange={handleSelectAll}
+              className="w-4 h-4 cursor-pointer"
+            />
+            <label className="text-sm font-medium text-gray-700 cursor-pointer">
+              Select All Creators
+            </label>
+          </div>
+          <span className="text-xs text-gray-500">
+            {selectedCreators.length} of {creators.length} selected
+          </span>
+        </div>
+
+        <div className="max-h-40 overflow-y-auto border rounded bg-white p-2">
+          {creators.length === 0 ? (
+            <p className="text-center text-gray-500 py-2 text-sm">No creators found</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {creators.map((creator) => (
+                <div key={creator.username} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedCreators.includes(creator.username)}
+                    onChange={() => handleCreatorToggle(creator.username)}
+                    className="w-4 h-4 cursor-pointer"
+                  />
+                  <label className="text-sm text-gray-700 cursor-pointer flex items-center gap-2">
+                    <User className="w-3 h-3 text-gray-500" />
+                    <span className="truncate" title={creator.username}>
+                      {creator.username}
+                    </span>
+                    <Badge text={creator.count} color="gray" size="sm" />
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            onClick={onApplyFilter}
+            className="flex-1 bg-purple-500 hover:bg-purple-600 text-white cursor-pointer"
+            size="sm"
+          >
+            Apply Creator Filter
+          </Button>
+          <Button
+            type="button"
+            onClick={onClearFilter}
+            variant="outline"
+            className="flex-1 cursor-pointer"
+            size="sm"
+          >
+            Clear
+          </Button>
+        </div>
+      </div>
+      
+      {isFilterActive && (
+        <div className="mt-3 text-xs text-gray-600">
+          <p>Showing questions by {selectedCreators.length} creator(s)</p>
+        </div>
+      )}
+    </Card>
+  );
+};
+
 // Question Statistics Component
 const QuestionStatistics = ({ questions, selectedQuestions }) => {
   const stats = useMemo(() => {
@@ -1217,14 +1614,20 @@ const QuestionStatistics = ({ questions, selectedQuestions }) => {
       return acc;
     }, {});
     
-    return { total, selected, bySubject };
+    const byCreator = questions.reduce((acc, question) => {
+      const creator = question.createdBy?.username || 'Unknown';
+      acc[creator] = (acc[creator] || 0) + 1;
+      return acc;
+    }, {});
+
+    return { total, selected, bySubject, byCreator };
   }, [questions, selectedQuestions]);
 
   if (questions.length === 0) return null;
 
   return (
     <Card className="p-4 mb-4 bg-green-50 border border-green-200">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 text-sm">
         <div className="text-center">
           <div className="text-2xl font-bold text-green-600">{stats.total}</div>
           <div className="text-gray-600">Total Questions</div>
@@ -1235,10 +1638,19 @@ const QuestionStatistics = ({ questions, selectedQuestions }) => {
           <div className="text-gray-600">Selected</div>
         </div>
         
-        {Object.entries(stats.bySubject).map(([subject, count]) => (
+        {Object.entries(stats.bySubject).slice(0, 2).map(([subject, count]) => (
           <div key={subject} className="text-center">
             <div className="text-xl font-bold text-purple-600">{count}</div>
             <div className="text-gray-600">{subject}</div>
+          </div>
+        ))}
+        
+        {Object.entries(stats.byCreator).slice(0, 2).map(([creator, count]) => (
+          <div key={creator} className="text-center">
+            <div className="text-xl font-bold text-orange-600">{count}</div>
+            <div className="text-gray-600 text-xs truncate" title={creator}>
+              {creator}
+            </div>
           </div>
         ))}
       </div>
@@ -1259,6 +1671,10 @@ const TestManagement = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isDateFilterActive, setIsDateFilterActive] = useState(false);
+
+  // Creator filter states
+  const [selectedCreators, setSelectedCreators] = useState([]);
+  const [isCreatorFilterActive, setIsCreatorFilterActive] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -1311,11 +1727,28 @@ const TestManagement = () => {
   const loadQuestions = async () => {
     try {
       const response = await getQuestions({ limit: 5000 });
+      console.log('Loaded questions:', response);
       setQuestions(response.questions || []);
     } catch (error) {
       console.error('Failed to load questions');
     }
   };
+
+  // Get unique creators from questions
+  const creators = useMemo(() => {
+    const creatorMap = questions.reduce((acc, question) => {
+      const creator = question.createdBy;
+      if (creator && creator.username) {
+        if (!acc[creator.username]) {
+          acc[creator.username] = { username: creator.username, count: 0 };
+        }
+        acc[creator.username].count++;
+      }
+      return acc;
+    }, {});
+
+    return Object.values(creatorMap).sort((a, b) => b.count - a.count);
+  }, [questions]);
 
   // Apply date filter to questions
   const filteredByDate = useMemo(() => {
@@ -1332,21 +1765,39 @@ const TestManagement = () => {
     });
   }, [questions, startDate, endDate, isDateFilterActive]);
 
-  // Fuzzy search using Fuse.js on date-filtered questions
+  // Apply creator filter to date-filtered questions
+  const filteredByCreator = useMemo(() => {
+    if (!isCreatorFilterActive || selectedCreators.length === 0) {
+      return filteredByDate;
+    }
+
+    return filteredByDate.filter(question => {
+      const creatorUsername = question.createdBy?.username;
+      return creatorUsername && selectedCreators.includes(creatorUsername);
+    });
+  }, [filteredByDate, selectedCreators, isCreatorFilterActive]);
+
+  // Fuzzy search using Fuse.js on creator and date filtered questions
   const fuse = useMemo(() => {
-    return new Fuse(filteredByDate, {
-      keys: ['questionText', 'subject', 'chapter', 'topic'],
+    return new Fuse(filteredByCreator, {
+      keys: [
+        'questionText', 
+        'subject', 
+        'chapter', 
+        'topics',
+        'createdBy.username'
+      ],
       threshold: 0.3,
       ignoreLocation: true,
       minMatchCharLength: 2,
     });
-  }, [filteredByDate]);
+  }, [filteredByCreator]);
 
   const filteredQuestions = useMemo(() => {
-    if (!searchTerm.trim()) return filteredByDate;
+    if (!searchTerm.trim()) return filteredByCreator;
     const results = fuse.search(searchTerm);
     return results.map((result) => result.item);
-  }, [searchTerm, fuse, filteredByDate]);
+  }, [searchTerm, fuse, filteredByCreator]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -1440,10 +1891,12 @@ const TestManagement = () => {
     setSearchTerm('');
     setShowAddQuestion(false);
     resetNewQuestion();
-    // Clear date filters
+    // Clear all filters
     setStartDate('');
     setEndDate('');
     setIsDateFilterActive(false);
+    setSelectedCreators([]);
+    setIsCreatorFilterActive(false);
   };
 
   const resetNewQuestion = () => {
@@ -1524,6 +1977,8 @@ const TestManagement = () => {
     try {
       const payload = {
         ...newQuestion,
+        // Convert topics to array format
+        topics: newQuestion.topic.split(',').map(t => t.trim()).filter(t => t),
         options: newQuestion.options.filter((opt) => opt.optionText.trim()),
         hint: { text: '' },
         approach: { text: '' },
@@ -1602,6 +2057,23 @@ const TestManagement = () => {
     setEndDate('');
     setIsDateFilterActive(false);
     toast.success('Date filter cleared');
+  };
+
+  // Creator filter handlers
+  const handleApplyCreatorFilter = () => {
+    if (selectedCreators.length === 0) {
+      toast.error('Please select at least one creator');
+      return;
+    }
+
+    setIsCreatorFilterActive(true);
+    toast.success(`Creator filter applied for ${selectedCreators.length} creator(s)`);
+  };
+
+  const handleClearCreatorFilter = () => {
+    setSelectedCreators([]);
+    setIsCreatorFilterActive(false);
+    toast.success('Creator filter cleared');
   };
 
   // Check if all filtered questions are selected
@@ -1911,6 +2383,16 @@ const TestManagement = () => {
             isFilterActive={isDateFilterActive}
           />
 
+          {/* Creator Filter Component */}
+          <CreatorFilter
+            creators={creators}
+            selectedCreators={selectedCreators}
+            onCreatorChange={setSelectedCreators}
+            onApplyFilter={handleApplyCreatorFilter}
+            onClearFilter={handleClearCreatorFilter}
+            isFilterActive={isCreatorFilterActive}
+          />
+
           {/* Question Statistics */}
           <QuestionStatistics 
             questions={filteredQuestions}
@@ -1922,7 +2404,7 @@ const TestManagement = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
-                placeholder="Search questions by keyword, subject, chapter, topic..."
+                placeholder="Search questions by keyword, subject, chapter, topic, or creator..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -2000,13 +2482,13 @@ const TestManagement = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium mb-1">Topic *</label>
+                    <label className="block text-xs font-medium mb-1">Topics *</label>
                     <Input
                       value={newQuestion.topic}
                       onChange={(e) =>
                         setNewQuestion({ ...newQuestion, topic: e.target.value })
                       }
-                      placeholder="Topic name"
+                      placeholder="Topic1, Topic2, Topic3"
                       className="text-sm"
                     />
                   </div>
@@ -2077,7 +2559,7 @@ const TestManagement = () => {
           <div className="max-h-96 overflow-y-auto border rounded p-3 space-y-2">
             {filteredQuestions.length === 0 ? (
               <p className="text-center text-gray-500 py-4 text-sm">
-                {searchTerm || isDateFilterActive ? 'No questions match your search/filter criteria' : 'No questions available'}
+                {searchTerm || isDateFilterActive || isCreatorFilterActive ? 'No questions match your search/filter criteria' : 'No questions available'}
               </p>
             ) : (
               filteredQuestions.map((q) => (
@@ -2094,14 +2576,25 @@ const TestManagement = () => {
                       html={q.questionText} 
                       className="text-sm font-medium"
                     />
-                    <div className="flex gap-2 mt-1">
+                    <div className="flex flex-wrap gap-2 mt-1">
                       <Badge text={q.subject} />
                       <Badge text={q.difficulty} />
-                      <Badge text={`${q.chapter} → ${q.topic}`} />
+                      {/* Handle topics as array */}
                       <Badge 
-  text={new Date(q.createdAt).toLocaleDateString('en-GB')} 
-  color="gray"
-/>
+                        text={`${q.chapter} → ${Array.isArray(q.topics) ? q.topics.join(', ') : q.topics || 'No topics'}`} 
+                      />
+                      <Badge 
+                        text={new Date(q.createdAt).toLocaleDateString('en-GB')} 
+                        color="gray"
+                      />
+                      {/* Display creator information */}
+                      {q.createdBy && (
+                        <Badge 
+                          text={`By: ${q.createdBy.username}`} 
+                          color="orange"
+                          icon={<User className="w-3 h-3 mr-1" />}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
