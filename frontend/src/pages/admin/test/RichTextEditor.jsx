@@ -83,9 +83,9 @@ const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
           </button>
 
           {showGreekMenu && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-w-64 max-h-64 overflow-y-auto">
-              <div className="p-2">
-                <div className="grid grid-cols-6 gap-1">
+            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 max-w-64 overflow-y-auto">
+              <div className="p-2 ">
+                <div className="grid grid-cols-6">
                   {greekLetters.map((letter, index) => (
                     <button
                       key={index}

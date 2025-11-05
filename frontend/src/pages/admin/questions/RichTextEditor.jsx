@@ -230,7 +230,7 @@ const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
           <button
             type="button"
             onClick={() => setShowGreekMenu(!showGreekMenu)}
-            className="p-2 rounded hover:bg-gray-200 transition-colors duration-200 flex items-center gap-1"
+            className="p-2 rounded hover:bg-gray-200 transition-colors  duration-200 flex items-center gap-1"
             title="Greek Letters"
           >
             <Type className="w-4 h-4" />
@@ -238,7 +238,7 @@ const RichTextEditor = ({ value, onChange, placeholder = "Enter text..." }) => {
           </button>
 
           {showGreekMenu && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-w-64 max-h-64 overflow-y-auto">
+            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50    w-[30vw] max-h-64 overflow-y-auto">
               <div className="p-2">
                 <div className="grid grid-cols-6 gap-1">
                   {greekLetters.map((letter, index) => (

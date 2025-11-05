@@ -191,7 +191,7 @@ const QuestionForm = ({
             </div>
 
             {/* Options */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-3 text-gray-700">
                 Options
               </label>
@@ -226,7 +226,63 @@ const QuestionForm = ({
                   />
                 </div>
               ))}
-            </div>
+            </div> */}
+            
+
+
+    <div>
+  <label className="block text-sm font-medium mb-3 text-gray-700">
+    Options
+  </label>
+
+  {currentData.options.map((opt, i) => (
+    <div
+      key={i}
+      className={`relative mb-6 p-5 border rounded-xl transition-all duration-200 ${
+        opt.isCorrect
+          ? 'bg-green-50 border-green-400 ring-1 ring-green-300 shadow-sm'
+          : 'bg-gray-50 border-gray-200 hover:shadow-md'
+      }`}
+    >
+      {/* Floating Option Label */}
+      <div className="absolute -top-3 left-4 bg-white px-3 py-1 text-sm font-semibold text-gray-700 rounded-full border border-gray-200 shadow-sm">
+        Option {i + 1}
+      </div>
+
+      <div className="flex gap-4 mb-3 items-start mt-2">
+        <input
+          type="radio"
+          name="correctOption"
+          checked={opt.isCorrect}
+          onChange={() => onToggleOption(i, 'isCorrect', true)}
+          className="mt-2 text-green-600 focus:ring-green-500 scale-150 cursor-pointer"
+        />
+
+        <div className="flex-1">
+          <RichTextEditor
+            value={opt.optionText}
+            onChange={(value) => onToggleOption(i, 'optionText', value)}
+            placeholder={`Enter Option ${i + 1} text...`}
+          />
+        </div>
+      </div>
+
+      <ImageUploadField
+        label={`Option ${i + 1} Image`}
+        currentImage={opt.optionImage}
+        field="optionImage"
+        index={i}
+        uploading={uploading === `optionImage-${i}-null`}
+        onFileSelect={onFileSelect}
+        onImageUpload={onImageUpload}
+        onRemoveImage={onRemoveImage}
+        selectedFiles={selectedFiles}
+      />
+    </div>
+  ))}
+</div>
+
+
 
             {/* Hint & Approach */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
