@@ -32,8 +32,8 @@ const QuestionList = ({
               Delete ({toDelete.size})
             </Button>
           )}
-          <Button className="cursor-pointer flex items-center justify-center" onClick={onAddNew}>
-            <Plus className="w-4 h-4 mr-1" /> Add Question
+          <Button className="cursor-pointer flex items-center justify-center outline hover:bg-gray-800 hover:text-white rounded-none h-10 w-[10vw]" onClick={onAddNew}>
+            <Plus className="w-4 h-4 mr-1 " /> Add Question
           </Button>
         </div>
       </div>
@@ -104,12 +104,12 @@ const QuestionList = ({
               {/* Timestamp Display */}
               <TimestampDisplay timestamp={q.createdAt} />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-10">
               <Button size="sm" variant="outline" onClick={() => onEdit(q)}>
                 <Edit className="w-4 h-4" />
               </Button>
               <Button className="cursor-pointer" size="sm" variant="danger" onClick={() => onDelete(q._id)}>
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="w-4 h-4 text-red-400" />
               </Button>
             </div>
           </Card>
