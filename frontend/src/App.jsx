@@ -36,7 +36,6 @@ import DPPTestPage from './components/dppSection/dppTestPage';
 
 import DPPManagement from './components/DPPManagement';
 const ProtectedRoute = ({ children }) => {
-
   const { token } = useAuthStore();
   if (!token) return <Navigate to="/login" replace />;
   return children;
@@ -45,13 +44,17 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   const location = useLocation();
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
+  
+  // Check if current route is a test-taking page where sidebar should be hidden
+  const isTestPage = location.pathname.startsWith('/test/') && 
+                    !location.pathname.includes('/test-result/');
 
   return (
     <div className="flex flex-col min-h-screen">
       {!isAuthPage && <Navbar />}
       <div className="flex flex-1">
-        {!isAuthPage && <Sidebar />}
-        <main className="flex-1 bg-gray-50">
+        {!isAuthPage && !isTestPage && <Sidebar />}
+        <main className={`flex-1 bg-gray-50 ${isTestPage ? 'w-full' : ''}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -59,30 +62,29 @@ const App = () => {
 
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
-              
             <Route path="/tests" element={<ProtectedRoute><Tests /></ProtectedRoute>} />
-             <Route path="/test/:testId" element={<ProtectedRoute><TakeTest /></ProtectedRoute>} />
-             <Route path="/test-result/:attemptId" element={<ProtectedRoute><TestResult /></ProtectedRoute>} />
-             <Route path="/chapterwise" element={<ProtectedRoute><Chapterwise /></ProtectedRoute>} />
-              <Route path="/chapterwise/:subject/:chapter/:topic" element={<TopicPractice />} />
+            <Route path="/test/:testId" element={<ProtectedRoute><TakeTest /></ProtectedRoute>} />
+            <Route path="/test-result/:attemptId" element={<ProtectedRoute><TestResult /></ProtectedRoute>} />
+            <Route path="/chapterwise" element={<ProtectedRoute><Chapterwise /></ProtectedRoute>} />
+            <Route path="/chapterwise/:subject/:chapter/:topic" element={<TopicPractice />} />
 
-             <Route path="/pyq" element={<ProtectedRoute><PYQ /></ProtectedRoute>} />
-               <Route path="/pyq/:year" element={<ProtectedRoute><PYQYear /></ProtectedRoute>} />
+            <Route path="/pyq" element={<ProtectedRoute><PYQ /></ProtectedRoute>} />
+            <Route path="/pyq/:year" element={<ProtectedRoute><PYQYear /></ProtectedRoute>} />
 
-             <Route path="/memories" element={<ProtectedRoute><Memories /></ProtectedRoute>} />
-             <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
-             <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
-             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/memories" element={<ProtectedRoute><Memories /></ProtectedRoute>} />
+            <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+            <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-             {/* Admin Routes */}
-             <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-             <Route path="/admin/questions" element={<ProtectedRoute><QuestionManagement /></ProtectedRoute>} />
-           <Route path="/admin/tests" element={<ProtectedRoute><TestManagement /></ProtectedRoute>} />
-             <Route path="/admin/users" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
+            {/* Admin Routes */}
+            <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/questions" element={<ProtectedRoute><QuestionManagement /></ProtectedRoute>} />
+            <Route path="/admin/tests" element={<ProtectedRoute><TestManagement /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
 
-<Route path="/dpp" element={<DPPSection />} />
-<Route path="/admin/dpp" element={<DPPManagement />} />
-<Route path="/dpp/:id" element={<DPPTestPage />} />
+            <Route path="/dpp" element={<DPPSection />} />
+            <Route path="/admin/dpp" element={<DPPManagement />} />
+            <Route path="/dpp/:id" element={<DPPTestPage />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
