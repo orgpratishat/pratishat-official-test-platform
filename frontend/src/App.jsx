@@ -35,6 +35,8 @@ import DPPTestPage from './components/dppSection/dppTestPage';
 
 
 import DPPManagement from './components/DPPManagement';
+
+
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuthStore();
   if (!token) return <Navigate to="/login" replace />;
@@ -45,13 +47,13 @@ const App = () => {
   const location = useLocation();
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
   
-  // Check if current route is a test-taking page where sidebar should be hidden
+  // Check if current route is a test-taking page where sidebar and navbar should be hidden
   const isTestPage = location.pathname.startsWith('/test/') && 
                     !location.pathname.includes('/test-result/');
 
   return (
     <div className="flex flex-col min-h-screen">
-      {!isAuthPage && <Navbar />}
+      {!isAuthPage && !isTestPage && <Navbar />}
       <div className="flex flex-1">
         {!isAuthPage && !isTestPage && <Sidebar />}
         <main className={`flex-1 bg-gray-50 ${isTestPage ? 'w-full' : ''}`}>
@@ -90,7 +92,7 @@ const App = () => {
           </Routes>
         </main>
       </div>
-      {!isAuthPage && <Footer />}
+      {!isAuthPage && !isTestPage && <Footer />}
     </div>
   );
 };
