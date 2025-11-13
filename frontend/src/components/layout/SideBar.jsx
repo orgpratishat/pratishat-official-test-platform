@@ -21,7 +21,8 @@ const links = [
   { to: '/pyq', icon: BookOpen, label: 'PYQ' },
   { to: '/dpp', icon: BookOpen, label: 'DPP' },
   { to: '/memories', icon: ClipboardList, label: 'Memories' },
-  { to: '/admin', icon: PieChart, label: 'Admin Panel' }
+  { to: '/admin', icon: PieChart, label: 'Admin Panel' },
+  {to:'/admin/rank-range', icon:BookOpen, label:'Rank'}
 ];
 
 const Sidebar = () => {

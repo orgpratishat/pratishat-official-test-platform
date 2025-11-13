@@ -18,6 +18,7 @@ const leaderboardRoutes = require('./routes/leaderboardRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const dppRoutes=require('./routes/dppRoutes')
+const rankRoutes=require('./routes/rankRanges')
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -60,6 +61,7 @@ app.use(cookieParser()); // Cookie parser
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/rankranges', rankRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/tests', testRoutes);
 app.use('/api/attempts', attemptRoutes);
