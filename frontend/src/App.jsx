@@ -83,7 +83,7 @@ const App = () => {
             <Route path="/admin/questions" element={<ProtectedRoute><QuestionManagement /></ProtectedRoute>} />
             <Route path="/admin/tests" element={<ProtectedRoute><TestManagement /></ProtectedRoute>} />
             <Route path="/admin/users" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
-              <Route path="/admin/rank-range" element={<ProtectedRoute><RankRange /></ProtectedRoute>} />
+            <Route path="/admin/rank-range" element={<ProtectedRoute><RankRange /></ProtectedRoute>} />
 
             <Route path="/dpp" element={<DPPSection />} />
             <Route path="/admin/dpp" element={<DPPManagement />} />
