@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import RankRangeManager from '../components/rankRange/rankRangeManager';
+import RankRangeManager from '../components/rankRange/RankRangeManager'
 
 
 const API_BASE_URL = import.meta.env.VITE_API_URL
