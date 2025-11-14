@@ -103,8 +103,8 @@ const Dashboard = () => {
             <Card className="p-6 cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/admin/rank-range')}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Revise</p>
-              <h3 className="text-2xl font-bold text-gray-900 mt-1">rank</h3>
+              <p className="text-sm text-gray-600">Rank range</p>
+              <h3 className="text-2xl font-bold text-gray-900 mt-1">CRUD</h3>
             </div>
             <div className="bg-red-100 p-3 rounded-lg">
               <BookOpen className="w-6 h-6 text-red-600" />
