@@ -190,47 +190,8 @@ const QuestionForm = ({
               />
             </div>
 
-            {/* Options */}
-            {/* <div>
-              <label className="block text-sm font-medium mb-3 text-gray-700">
-                Options
-              </label>
-              {currentData.options.map((opt, i) => (
-                <div key={i} className="mb-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
-                  <div className="flex gap-3 mb-3 items-start">
-                    <input
-                      type="radio"
-                      name="correctOption"
-                      checked={opt.isCorrect}
-                      onChange={() => onToggleOption(i, 'isCorrect', true)}
-                      className="mt-2 text-blue-600 focus:ring-blue-500"
-                    />
-                    <div className="flex-1">
-                      <RichTextEditor
-                        value={opt.optionText}
-                        onChange={(value) => onToggleOption(i, 'optionText', value)}
-                        placeholder={`Option ${i + 1}`}
-                      />
-                    </div>
-                  </div>
-                  <ImageUploadField
-                    label={`Option ${i + 1} Image`}
-                    currentImage={opt.optionImage}
-                    field="optionImage"
-                    index={i}
-                    uploading={uploading === `optionImage-${i}-null`}
-                    onFileSelect={onFileSelect}
-                    onImageUpload={onImageUpload}
-                    onRemoveImage={onRemoveImage}
-                    selectedFiles={selectedFiles}
-                  />
-                </div>
-              ))}
-            </div> */}
-            
-
-
-    <div>
+         {/* Options */}
+<div>
   <label className="block text-sm font-medium mb-3 text-gray-700">
     Options
   </label>
@@ -281,7 +242,6 @@ const QuestionForm = ({
     </div>
   ))}
 </div>
-
 
 
             {/* Hint & Approach */}
