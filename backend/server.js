@@ -63,10 +63,12 @@ app.use(cookieParser()); // Cookie parser
 
 // Create a Nodemailer transporter using Gmail
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // Automatically sets host and port for Gmail[citation:4]
+  host: 'smtp.mail.ru', // Mail.ru SMTP server[citation:13]
+  port: 465, // Use 465 for SSL (recommended) or 587 for TLS[citation:13]
+  secure: true, // true for 465, false for other ports
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
+    user: process.env.MAILRU_USER, // Your full Mail.ru email address
+    pass: process.env.MAILRU_APP_PASSWORD, // App-specific password
   },
 });
 
