@@ -1231,7 +1231,7 @@ const TestInterface = () => {
         <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center">
           <div className='flex gap-4 items-center'>
                    <div 
-          onClick={() => navigate('/landing')} 
+
           className="flex items-center gap-2 cursor-pointer group"
         >
           <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
