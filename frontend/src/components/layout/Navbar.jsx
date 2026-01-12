@@ -1,60 +1,8 @@
-// import React from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import { useAuthStore } from '../../store/authStore';
-// import Button from '../ui/Button';
-
-
-// const Navbar = () => {
-//   const navigate = useNavigate();
-//   const { user, logout } = useAuthStore();
-
-//   const handleLogout = () => {
-//     logout();
-//     navigate('/login');
-//   };
-
-//   return (
-//     <nav className="bg-white border-b border-gray-200 px-4 py-3 flex justify-between items-center">
-//       <div>
-//         <Link to="/" className="text-2xl font-bold text-primary-600">
-          
-//           <div className='flex flex-col'>
-//          <div className='flex'>
-//              <span>Crack</span><span className='text-blue-600'>G</span>
-//          </div>
-//           <span className='text-sm'>Mentor Dashboard</span>
-//           </div>
-//         </Link>
-//       </div>
-//       <div className="flex items-center space-x-4">
-//         {user ? (
-//           <>
-//             <span className="text-gray-700">Hello, {user.profile?.fullName}</span>
-//             <Button variant="outline" size="sm" onClick={handleLogout}>
-//               Logout
-//             </Button>
-//           </>
-//         ) : (
-//           <>
-//             <Button variant="outline" size="sm" onClick={() => navigate('/login')}>
-//               Login
-//             </Button>
-//             <Button variant="outline" size="sm" onClick={() => navigate('/register')}>
-//               Register
-//             </Button>
-//           </>
-//         )}
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
 
 
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import Button from '../ui/Button';
 import { 
@@ -63,8 +11,7 @@ import {
   Bell, 
   Search, 
   Settings, 
-  ChevronDown, 
-  Sparkles,
+  ChevronDown,
   Menu,
   X
 } from 'lucide-react';
@@ -85,11 +32,24 @@ const Navbar = () => {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-gradient-to-r from-white to-gray-50/80 backdrop-blur-xl border-b border-gray-200/50 px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between">
-          {/* Left: Logo */}
+          {/* Left: Logo and Mobile Menu Button */}
           <div className="flex items-center gap-3">
+            {/* Mobile Menu Button - Now on left side */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden flex items-center justify-center p-2 rounded-xl hover:bg-gray-100/50 transition-colors duration-200"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6 text-gray-700" />
+              ) : (
+                <Menu className="h-6 w-6 text-gray-700" />
+              )}
+            </button>
+
+            {/* Logo */}
             <div 
               onClick={() => navigate('/landing')} 
-              className="flex items-center gap-2 cursor-pointer group"
+              className="flex items-center gap-2 cursor-pointer group ml-2"
             >
               <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:shadow-lg group-hover:shadow-purple-500/30">
                 <span className="text-white font-bold text-xl">≋</span>
@@ -217,18 +177,6 @@ const Navbar = () => {
                 </Button>
               </div>
             )}
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden ml-2 p-2 rounded-xl hover:bg-gray-100/50 transition-colors duration-200"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6 text-gray-700" />
-              ) : (
-                <Menu className="h-6 w-6 text-gray-700" />
-              )}
-            </button>
           </div>
         </div>
 
@@ -302,8 +250,6 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-
-    
     </>
   );
 };

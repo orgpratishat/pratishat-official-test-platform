@@ -859,7 +859,7 @@ const Sidebar = () => {
       {/* Floating mobile menu button */}
       <button
         onClick={toggleMobileSidebar}
-        className="fixed top-6 left-6 z-50 w-12 h-12 rounded-2xl bg-gradient-to-br from-white to-gray-50 border border-gray-200/50 shadow-2xl md:hidden transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center group"
+        className="fixed top-4 left-6 z-50 w-12 h-12 rounded-2xl bg-gradient-to-br from-white to-gray-50 border border-gray-200/50 shadow-2xl md:hidden transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center group"
         aria-label="Open menu"
         style={{
           backdropFilter: 'blur(10px)'
