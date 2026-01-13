@@ -308,9 +308,10 @@ const LoginForm = () => {
             
             <h2 className="text-3xl font-bold text-gray-900 mb-3">
               Welcome Back to
-              <span className="block bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                MedDestiny
-              </span>
+             
+               <span className="block font-bold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">
+            Med<span className="text-purple-600">Destiny</span>
+          </span>
             </h2>
             <p className="text-gray-600 font-medium">
               Continue your medical learning journey
