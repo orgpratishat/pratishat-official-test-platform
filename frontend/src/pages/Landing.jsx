@@ -62,13 +62,8 @@ export default function Landing() {
 
           {/* Left Section */}
           <div className="flex-1 w-full text-center lg:text-left relative z-10">
-            {/* Animated Badge */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 px-4 py-2 rounded-full mb-6 sm:mb-8 animate-gradient-x">
-              <Sparkles className="w-3 h-3 text-purple-600" />
-              <span className="text-purple-600 font-bold text-xs tracking-wider">
-                AI-POWERED ONLINE LEARNING PLATFORM
-              </span>
-            </div>
+           
+         
 
             {/* Main Heading with Animation */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight mb-6 lg:mb-8 animate-fade-in-up">

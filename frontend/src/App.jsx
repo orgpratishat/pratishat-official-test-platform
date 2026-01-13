@@ -1,3 +1,6 @@
+
+
+
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
@@ -50,7 +53,7 @@ const App = () => {
   const location = useLocation();
 
   /* ---------- Route Flags ---------- */
-  const isAuthPage = ['/login', '/register'].includes(location.pathname);
+  const isAuthPage = ['/login', '/register', '/student-registration', '/contact-us'].includes(location.pathname);
 
   const isTestPage =
     location.pathname.startsWith('/test/') &&
@@ -58,8 +61,7 @@ const App = () => {
 
   const isLandingPage = location.pathname === '/landing';
   const isContactPage = location.pathname === '/contact-us';
-  const isStudentRegistrationPage =
-    location.pathname === '/student-registration';
+  const isStudentRegistrationPage = location.pathname === '/student-registration';
 
   /* ---------- Layout Visibility ---------- */
   const showNavbar =
@@ -87,31 +89,26 @@ const App = () => {
 
         <main
           className={`flex-1 bg-gray-50 ${
-            isTestPage || isLandingPage || isStudentRegistrationPage
+            isTestPage || isLandingPage || isStudentRegistrationPage || isContactPage
               ? 'w-full'
               : ''
           }`}
         >
           <Routes>
+            {/* Public Routes (No login required) */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/landing" element={<Landing />} />
+            <Route path="/student-registration" element={<StudentRegistration />} />
+            <Route path="/contact-us" element={<Contact />} />
 
+            {/* Protected Routes (Login required) */}
             <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>
                   <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/contact-us"
-              element={
-                <ProtectedRoute>
-                  <Contact />
                 </ProtectedRoute>
               }
             />
@@ -211,15 +208,6 @@ const App = () => {
               }
             />
 
-            <Route
-              path="/student-registration"
-              element={
-                <ProtectedRoute>
-                  <StudentRegistration />
-                </ProtectedRoute>
-              }
-            />
-
             {/* ---------- Admin Routes ---------- */}
             <Route
               path="/admin"
@@ -282,5 +270,3 @@ const App = () => {
 };
 
 export default App;
-
-
